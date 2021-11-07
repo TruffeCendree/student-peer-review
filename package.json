@@ -4,6 +4,7 @@
   "description": "A web-based peer review for animating tutorial sessions",
   "main": "index.js",
   "scripts": {
+    "compile-schemas": "json2ts -i src/schemas/json -o src/schemas/types",
     "semantic-release": "semantic-release",
     "start-dev": "node dist/server/index.js | npx pino-pretty",
     "watch": "tsc --watch"
@@ -28,6 +29,7 @@
     "@commitlint/config-conventional": "^14.1.0",
     "@types/node": "^16.11.6",
     "@types/yargs": "^17.0.5",
+    "json-schema-to-typescript": "^10.1.5",
     "pino-pretty": "^7.2.0",
     "semantic-release": "^18.0.0"
   },
