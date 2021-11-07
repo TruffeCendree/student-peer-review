@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "outDir": "dist/server",
+    "target": "es2018",
+    "moduleResolution": "node",
+    "module": "commonjs",
+    "strict": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "skipLibCheck": true
+  },
+  "include": ["src/**/*"]
+}

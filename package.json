@@ -4,8 +4,9 @@
   "description": "A web-based peer review for animating tutorial sessions",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "semantic-release": "semantic-release"
+    "semantic-release": "semantic-release",
+    "start-dev": "node dist/server/index.js | npx pino-pretty",
+    "watch": "tsc --watch"
   },
   "repository": {
     "type": "git",
@@ -25,6 +26,12 @@
   "devDependencies": {
     "@commitlint/cli": "^14.1.0",
     "@commitlint/config-conventional": "^14.1.0",
+    "@types/node": "^16.11.6",
+    "pino-pretty": "^7.2.0",
     "semantic-release": "^18.0.0"
+  },
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "fastify": "^3.23.0"
   }
 }
