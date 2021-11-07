@@ -3,6 +3,7 @@ import { DATABASE_HOST, DATABASE_LOGGING, DATABASE_NAME, DATABASE_PASS, DATABASE
 import { createConnection } from 'typeorm'
 import { User } from '../entities/user'
 import { Project } from '../entities/project'
+import { Session } from '../entities/session'
 
 export function initConnection () {
   return createConnection({
@@ -12,7 +13,7 @@ export function initConnection () {
     username: DATABASE_USER,
     password: DATABASE_PASS,
     database: DATABASE_NAME,
-    entities: [ User, Project ],
+    entities: [ User, Project, Session ],
     synchronize: DATABASE_SYNC,
     logging: DATABASE_LOGGING
   })

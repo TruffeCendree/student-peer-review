@@ -15,6 +15,9 @@ export class User {
   @Column({ unique: true })
   email!: string
 
+  @Column({ type: 'varchar', unique: true, nullable: true })
+  loginToken!: string | null
+
   @ManyToMany(() => Project, project => project.users)
   @JoinTable()
   projects!: Promise<Project[]>
