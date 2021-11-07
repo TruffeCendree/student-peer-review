@@ -1,0 +1,30 @@
+{
+  "name": "student-peer-review",
+  "version": "0.0.0-development",
+  "description": "A web-based peer review for animating tutorial sessions",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "semantic-release": "semantic-release"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/TruffeCendree/student-peer-review.git"
+  },
+  "keywords": [
+    "peer-review",
+    "student",
+    "educational"
+  ],
+  "author": "Thomas VEILLARD",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/TruffeCendree/student-peer-review/issues"
+  },
+  "homepage": "https://github.com/TruffeCendree/student-peer-review#readme",
+  "devDependencies": {
+    "@commitlint/cli": "^14.1.0",
+    "@commitlint/config-conventional": "^14.1.0",
+    "semantic-release": "^18.0.0"
+  }
+}
