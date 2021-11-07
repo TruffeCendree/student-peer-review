@@ -1,4 +1,6 @@
 import { PORT } from './lib/dotenv'
-import { fastifyInstance } from './lib/fastify'
+import { server } from './lib/fastify'
+import { createConnectionFromEnv } from './lib/typeorm'
 
-fastifyInstance.listen(PORT).catch(console.error)
+createConnectionFromEnv().then(connection => connection.close())
+server.listen(PORT).catch(console.error)

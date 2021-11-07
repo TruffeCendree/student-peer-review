@@ -1,4 +1,3 @@
-import { fastify } from './fastify'
+import fastify from 'fastify'
 
-export * from 'fastify'
-export const fastifyInstance = fastify({ logger: true })
+export const server = fastify({ logger: true })
