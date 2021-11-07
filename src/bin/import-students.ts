@@ -4,7 +4,7 @@ import { hideBin } from 'yargs/helpers'
 import { User } from '../entities/user'
 import { initConnection } from '../lib/typeorm'
 
-async function run () {
+async function run() {
   const conn = await initConnection()
   const argv = await yargs(hideBin(process.argv)).string('excelFile').demandOption('excelFile').argv
 

@@ -10,4 +10,3 @@ export const server = fastify({ logger: true })
   .register(session)
   .register(sessionRoutes, { prefix: '/sessions' })
   .register(userRoutes, { prefix: '/users' })
-

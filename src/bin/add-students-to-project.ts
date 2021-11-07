@@ -5,18 +5,17 @@ import { Project } from '../entities/project'
 import { User } from '../entities/user'
 import { initConnection } from '../lib/typeorm'
 
-async function run () {
+async function run() {
   const conn = await initConnection()
   const argv = await yargs(hideBin(process.argv))
     .string('excelFile')
     .number('projectId')
     .demandOption('excelFile')
-    .demandOption('projectId')
-    .argv
+    .demandOption('projectId').argv
 
   const workbook = xlsx.readFile(argv.excelFile)
   const sheet = Object.values(workbook.Sheets)[0]
-    
+
   const projectRepository = conn.getRepository(Project)
   const userRepository = conn.getRepository(User)
 

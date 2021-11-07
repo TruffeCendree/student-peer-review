@@ -14,8 +14,8 @@ export const COOKIE_SIGNED = process.env.COOKIE_SIGNED === 'true'
 export const COOKIE_HTTP_ONLY = process.env.COOKIE_HTTP_ONLY === 'true'
 export const COOKIE_SECURE = process.env.COOKIE_SECURE === 'true'
 
-function getOrThrow (name: string) {
-  const val =  process.env[name]
+function getOrThrow(name: string) {
+  const val = process.env[name]
   if (typeof val === 'undefined') throw new Error(`Missing mandatory environment variable ${name}`)
   return val
 }
