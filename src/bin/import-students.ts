@@ -13,13 +13,11 @@ async function run () {
 
   await conn.transaction(async entityManager => {
     for (let i = 2; i <= xlsx.utils.decode_range(sheet['!ref'] as string).e.r + 1; i++) {
-      const user = await entityManager.getRepository(User).save({
+      await entityManager.getRepository(User).save({
         lastname: sheet[`A${i}`].v,
         firstname: sheet[`B${i}`].v,
         email: sheet[`C${i}`].v
       })
-
-      console.log(user)
     }
   })
 

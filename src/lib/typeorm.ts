@@ -2,6 +2,7 @@ import 'reflect-metadata'
 import { DATABASE_HOST, DATABASE_LOGGING, DATABASE_NAME, DATABASE_PASS, DATABASE_PORT, DATABASE_SYNC, DATABASE_USER } from './dotenv'
 import { createConnection } from 'typeorm'
 import { User } from '../entities/user'
+import { Project } from '../entities/project'
 
 export function initConnection () {
   return createConnection({
@@ -11,7 +12,7 @@ export function initConnection () {
     username: DATABASE_USER,
     password: DATABASE_PASS,
     database: DATABASE_NAME,
-    entities: [ User ],
+    entities: [ User, Project ],
     synchronize: DATABASE_SYNC,
     logging: DATABASE_LOGGING
   })

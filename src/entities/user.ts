@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
+import { Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from 'typeorm'
+import { Project } from './project'
 
 @Entity()
 export class User {
@@ -13,4 +14,8 @@ export class User {
 
   @Column({ unique: true })
   email!: string
+
+  @ManyToMany(() => Project, project => project.users)
+  @JoinTable()
+  projects!: Promise<Project[]>
 }
