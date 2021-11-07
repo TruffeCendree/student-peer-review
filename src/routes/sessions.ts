@@ -22,7 +22,7 @@ export async function sessionRoutes(fastify: FastifyInstance) {
       await userRepository.save(user)
 
       await saveSession(reply, user)
-      reply.redirect('/')
+      await reply.redirect('/')
     }
   })
 }

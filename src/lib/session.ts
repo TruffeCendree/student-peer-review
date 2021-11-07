@@ -20,7 +20,7 @@ export async function session(fastify: FastifyInstance) {
 export async function saveSession(reply: FastifyReply, user: User) {
   const id = (await promisify(randomBytes)(64)).toString('base64')
   await getConnection().getRepository(Session).save({ id, user })
-  reply.setCookie(COOKIE_NAME, id, { signed: COOKIE_SIGNED, httpOnly: COOKIE_HTTP_ONLY, secure: COOKIE_SECURE })
+  await reply.setCookie(COOKIE_NAME, id, { signed: COOKIE_SIGNED, httpOnly: COOKIE_HTTP_ONLY, secure: COOKIE_SECURE })
 }
 
 async function loadSession(request: FastifyRequest) {

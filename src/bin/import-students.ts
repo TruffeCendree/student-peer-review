@@ -14,9 +14,14 @@ async function run() {
   await conn.transaction(async entityManager => {
     for (let i = 2; i <= xlsx.utils.decode_range(sheet['!ref'] as string).e.r + 1; i++) {
       await entityManager.getRepository(User).save({
-        lastname: sheet[`A${i}`].v,
-        firstname: sheet[`B${i}`].v,
-        email: sheet[`C${i}`].v
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        lastname: sheet[`A${i}`].v as string,
+
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        firstname: sheet[`B${i}`].v as string,
+
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        email: sheet[`C${i}`].v as string
       })
     }
   })

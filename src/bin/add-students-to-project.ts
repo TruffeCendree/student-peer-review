@@ -23,7 +23,8 @@ async function run() {
   const projectUsers = await project.users
 
   for (let i = 2; i <= xlsx.utils.decode_range(sheet['!ref'] as string).e.r + 1; i++) {
-    projectUsers.push(await userRepository.findOneOrFail({ where: { email: sheet[`C${i}`].v } }))
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    projectUsers.push(await userRepository.findOneOrFail({ where: { email: sheet[`C${i}`].v as string } }))
   }
 
   project.users = Promise.resolve(projectUsers)
