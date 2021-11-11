@@ -1,6 +1,6 @@
 import { FastifyInstance } from 'fastify'
 import { SessionsCreateQuerystring } from '../schemas/types/sessions.create.querystring'
-import * as SessionsCreateQuerystringSchema from '../schemas/json/sessions.create.querystring.json'
+import * as sessionsCreateQuerystringSchema from '../schemas/json/sessions.create.querystring.json'
 import { User } from '../entities/user'
 import { getConnection } from 'typeorm'
 import { saveSession } from '../lib/session'
@@ -10,7 +10,7 @@ export async function sessionRoutes(fastify: FastifyInstance) {
     method: 'POST',
     url: '/',
     schema: {
-      querystring: SessionsCreateQuerystringSchema
+      querystring: sessionsCreateQuerystringSchema
     },
     handler: async function create(request, reply) {
       // should be handled by the schema validation, but is too critical so we check it again.

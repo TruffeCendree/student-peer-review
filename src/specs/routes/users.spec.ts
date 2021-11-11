@@ -13,6 +13,7 @@ describe('/users', function () {
       const response = await server.inject({ method: 'GET', url: '/users/me', cookies })
       expect(response.statusCode).to.eq(200)
       expect(response.json()).to.haveOwnProperty('id').equal(session.user.id)
+      expect(response.json()).to.not.haveOwnProperty('loginToken')
     })
 
     it('should reject if current user is not authorized', async function () {

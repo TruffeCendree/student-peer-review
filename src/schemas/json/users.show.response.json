@@ -1,0 +1,11 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "type": "object",
+  "properties": {
+    "id": { "type": "number" },
+    "firstname": { "type": "string" },
+    "lastname": { "type": "string" },
+    "email": { "type": "string" }
+  },
+  "additionalProperties": false
+}
