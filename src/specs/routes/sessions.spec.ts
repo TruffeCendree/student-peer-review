@@ -1,5 +1,5 @@
 import { server } from '../../lib/fastify'
-import { createUserFixture } from '../fixtures/users.fixture'
+import { createUserFixture } from '../fixtures/users-fixtures'
 import { expect } from 'chai'
 import { getConnection } from 'typeorm'
 import { User } from '../../entities/user'
