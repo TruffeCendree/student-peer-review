@@ -1,15 +1,18 @@
 import fastify from 'fastify'
 import cookie, { FastifyCookieOptions } from 'fastify-cookie'
+import fastifySwagger from 'fastify-swagger'
 import { UnauthorizedError } from '../policies/policy'
 import { sessionRoutes } from '../routes/sessions'
 import { userRoutes } from '../routes/users'
 import { COOKIE_SECRET, FASTIFY_LOGGING } from './dotenv'
 import { loadSession } from './session'
+import { swaggerConfig } from './swagger'
 
 export const server = fastify({ logger: FASTIFY_LOGGING })
   .register(cookie, { secret: COOKIE_SECRET } as FastifyCookieOptions)
   .decorateRequest('session', null)
   .addHook('preHandler', loadSession)
+  .register(fastifySwagger, swaggerConfig)
   .register(sessionRoutes, { prefix: '/sessions' })
   .register(userRoutes, { prefix: '/users' })
   .setErrorHandler((error, request, reply) => {

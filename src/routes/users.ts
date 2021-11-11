@@ -8,9 +8,7 @@ import * as usersShowParamsSchema from '../schemas/json/users.show.params.json'
 import * as usersShowResponseSchema from '../schemas/json/users.show.response.json'
 
 export async function userRoutes(fastify: FastifyInstance) {
-  fastify.route<{ Params: UsersShowParams }>({
-    method: 'GET',
-    url: '/:id',
+  fastify.get<{ Params: UsersShowParams }>('/:id', {
     schema: {
       params: usersShowParamsSchema,
       response: { 200: usersShowResponseSchema }

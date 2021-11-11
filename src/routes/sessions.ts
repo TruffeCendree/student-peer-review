@@ -6,9 +6,7 @@ import { getConnection } from 'typeorm'
 import { saveSession } from '../lib/session'
 
 export async function sessionRoutes(fastify: FastifyInstance) {
-  fastify.route<{ Querystring: SessionsCreateQuerystring }>({
-    method: 'POST',
-    url: '/',
+  fastify.post<{ Querystring: SessionsCreateQuerystring }>('/', {
     schema: {
       querystring: sessionsCreateQuerystringSchema
     },
