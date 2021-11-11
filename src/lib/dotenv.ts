@@ -4,7 +4,7 @@ import * as path from 'path'
 export const NODE_ENV = getOrThrow('NODE_ENV') as 'test' | 'production'
 
 // config() does not override loaded env variable, so load overrides first
-if (NODE_ENV === 'test') config({ path: path.resolve(process.cwd(), '.test.env') })
+if (NODE_ENV === 'test') config({ path: path.resolve(process.cwd(), '.env.test') })
 config()
 
 export const PORT = parseInt(process.env.PORT || '8080', 10)

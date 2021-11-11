@@ -12,18 +12,16 @@ declare module 'fastify' {
   }
 }
 
-export async function session(fastify: FastifyInstance) {
-  fastify.decorateRequest('session', null)
-  fastify.addHook('preHandler', loadSession)
-}
-
 export async function saveSession(reply: FastifyReply, user: User) {
   const id = (await promisify(randomBytes)(64)).toString('base64')
   await getConnection().getRepository(Session).save({ id, user })
   void reply.setCookie(COOKIE_NAME, id, { signed: COOKIE_SIGNED, httpOnly: COOKIE_HTTP_ONLY, secure: COOKIE_SECURE })
 }
 
-async function loadSession(request: FastifyRequest) {
+export async function loadSession(request: FastifyRequest) {
   if (!request.cookies[COOKIE_NAME]) return
-  request.session = await getConnection().getRepository(Session).findOne(request.cookies.sessionId)
+
+  const unsigned = request.unsignCookie(request.cookies.sessionId)
+  const repo = getConnection().getRepository(Session)
+  if (unsigned.value && unsigned.valid) request.session = await repo.findOne(unsigned.value)
 }

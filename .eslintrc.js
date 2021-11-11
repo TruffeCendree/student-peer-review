@@ -23,7 +23,10 @@ module.exports = {
     '@typescript-eslint/no-explicit-any': 'off',
 
     // I use async on all funcions handled by fastify for now. I have to check before changing this.
-    '@typescript-eslint/require-await': 'off'
+    '@typescript-eslint/require-await': 'off',
+
+    // Used to notify typescript that request.session is not nil when we know it isn't.
+    '@typescript-eslint/no-non-null-assertion': 'off'
 
     // Feel free to enable/disable some rules depending on your needs.
   }

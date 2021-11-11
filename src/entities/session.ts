@@ -6,6 +6,6 @@ export class Session {
   @PrimaryColumn()
   id!: string
 
-  @ManyToOne(() => User, { eager: true })
+  @ManyToOne(() => User, { eager: true, cascade: ['insert'] })
   user!: User
 }
