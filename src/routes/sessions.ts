@@ -14,7 +14,7 @@ export async function sessionRoutes(fastify: FastifyInstance) {
     },
     handler: async function create(request, reply) {
       // should be handled by the schema validation, but is too critical so we check it again.
-      if (!request.query.token) throw new Error('Never lookup for a null loginToken, it is will match the wrong user.')
+      if (!request.query.token) throw new Error('Never lookup for a null loginToken, it will match the wrong user.')
 
       const userRepository = getConnection().getRepository(User)
       const user = await userRepository.findOneOrFail({ where: { loginToken: request.query.token } })
