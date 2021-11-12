@@ -2,6 +2,7 @@ import fastify from 'fastify'
 import cookie, { FastifyCookieOptions } from 'fastify-cookie'
 import fastifySwagger from 'fastify-swagger'
 import { UnauthorizedError } from '../policies/policy'
+import { projectsRoutes } from '../routes/projects'
 import { sessionRoutes } from '../routes/sessions'
 import { userRoutes } from '../routes/users'
 import { COOKIE_SECRET, FASTIFY_LOGGING } from './dotenv'
@@ -15,6 +16,7 @@ export const server = fastify({ logger: FASTIFY_LOGGING })
   .register(fastifySwagger, swaggerConfig)
   .register(sessionRoutes, { prefix: '/sessions' })
   .register(userRoutes, { prefix: '/users' })
+  .register(projectsRoutes, { prefix: '/projects' })
   .setErrorHandler((error, request, reply) => {
     // based on https://github.com/fastify/fastify/blob/1e94070992d911a81a26597c25f2d35ae65f3d91/fastify.js#L74
     if (error instanceof UnauthorizedError) {

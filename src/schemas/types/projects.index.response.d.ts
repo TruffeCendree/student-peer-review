@@ -5,9 +5,8 @@
  * and run json-schema-to-typescript to regenerate this file.
  */
 
-export interface UsersShowResponse {
+export type ProjectsIndexResponse = {
   id: number;
-  firstname: string;
-  lastname: string;
-  email: string;
-}
+  name: string;
+  instructions: string | null;
+}[];

@@ -4,10 +4,14 @@ export interface PolicyAction<Model> {
   (currentSession: Session | null | undefined, record: Model): Promise<boolean | UnauthorizedError>
 }
 
+export interface PolicyActionIndex {
+  (currentSession: Session | null | undefined): Promise<boolean | UnauthorizedError>
+}
+
 export class UnauthorizedError extends Error {}
 
 export async function authorizeOfFail<Model>(
-  policyAction: PolicyAction<Model>,
+  policyAction: PolicyAction<Model> | PolicyActionIndex,
   currentSession: Session | null | undefined,
   record: Model
 ) {

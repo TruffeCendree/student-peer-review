@@ -7,5 +7,6 @@
     "lastname": { "type": "string" },
     "email": { "type": "string" }
   },
-  "additionalProperties": false
+  "additionalProperties": false,
+  "required": ["id", "firstname", "lastname", "email"]
 }
