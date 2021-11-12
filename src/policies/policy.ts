@@ -10,6 +10,12 @@ export interface PolicyActionIndex {
 
 export class UnauthorizedError extends Error {}
 
+export class UnloggedError extends UnauthorizedError {
+  constructor() {
+    super('You are not logged in')
+  }
+}
+
 export async function authorizeOfFail<Model>(
   policyAction: PolicyAction<Model> | PolicyActionIndex,
   currentSession: Session | null | undefined,

@@ -1,0 +1,10 @@
+{
+  "$id": "src/schemas/json/multipart.file.json",
+  "type": "object",
+  "properties": {
+    "encoding": { "type": "string" },
+    "filename": { "type": "string" },
+    "mimetype": { "type": "string" }
+  },
+  "required": ["encoding", "filename", "mimetype"]
+}

@@ -1,22 +1,31 @@
 import fastify from 'fastify'
 import cookie, { FastifyCookieOptions } from 'fastify-cookie'
+import fastifyMultipart from 'fastify-multipart'
 import fastifySwagger from 'fastify-swagger'
 import { UnauthorizedError } from '../policies/policy'
 import { projectsRoutes } from '../routes/projects'
 import { sessionRoutes } from '../routes/sessions'
+import { submissionsRoutes } from '../routes/submissions'
 import { userRoutes } from '../routes/users'
 import { COOKIE_SECRET, FASTIFY_LOGGING } from './dotenv'
+import { multipartConfig } from './multipart'
 import { loadSession } from './session'
 import { swaggerConfig } from './swagger'
+import * as multipartFieldNumberSchema from '../schemas/json/multipart.field.number.json'
+import * as multipartFileSchema from '../schemas/json/multipart.file.json'
 
 export const server = fastify({ logger: FASTIFY_LOGGING })
+  .addSchema(multipartFieldNumberSchema)
+  .addSchema(multipartFileSchema)
   .register(cookie, { secret: COOKIE_SECRET } as FastifyCookieOptions)
   .decorateRequest('session', null)
   .addHook('preHandler', loadSession)
+  .register(fastifyMultipart, multipartConfig)
   .register(fastifySwagger, swaggerConfig)
   .register(sessionRoutes, { prefix: '/sessions' })
   .register(userRoutes, { prefix: '/users' })
   .register(projectsRoutes, { prefix: '/projects' })
+  .register(submissionsRoutes, { prefix: '/submissions' })
   .setErrorHandler((error, request, reply) => {
     // based on https://github.com/fastify/fastify/blob/1e94070992d911a81a26597c25f2d35ae65f3d91/fastify.js#L74
     if (error instanceof UnauthorizedError) {

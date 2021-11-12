@@ -31,6 +31,9 @@ export const SMTP_SECURE = process.env.SMTP_SECURE === 'true'
 export const SMTP_USER = getOrThrow('SMTP_USER')
 export const SMTP_PASS = getOrThrow('SMTP_PASS')
 
+export const MULTIPART_MAX_SIZE = parseInt(getOrThrow('MULTIPART_MAX_SIZE'), 10)
+export const MULTIPART_MAX_FILES = parseInt(getOrThrow('MULTIPART_MAX_FILES'), 10)
+
 function getOrThrow(name: string) {
   const val = process.env[name]
   if (typeof val === 'undefined') throw new Error(`Missing mandatory environment variable ${name}`)

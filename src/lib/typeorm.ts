@@ -12,6 +12,7 @@ import { createConnection } from 'typeorm'
 import { User } from '../entities/user'
 import { Project } from '../entities/project'
 import { Session } from '../entities/session'
+import { Submission } from '../entities/submission'
 
 export function initConnection() {
   return createConnection({
@@ -21,7 +22,7 @@ export function initConnection() {
     username: DATABASE_USER,
     password: DATABASE_PASS,
     database: DATABASE_NAME,
-    entities: [User, Project, Session],
+    entities: [User, Project, Session, Submission],
     synchronize: DATABASE_SYNC,
     logging: DATABASE_LOGGING
   })

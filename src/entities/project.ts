@@ -1,4 +1,5 @@
-import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm'
+import { Column, Entity, getConnection, ManyToMany, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
+import { Submission } from './submission'
 import { User } from './user'
 
 @Entity()
@@ -14,4 +15,13 @@ export class Project {
 
   @ManyToMany(() => User, user => user.projects)
   users!: Promise<User[]>
+
+  @OneToMany(() => Submission, submission => submission.project)
+  submissions!: Promise<Submission[]>
+
+  getSubmissionForUser(user: User) {
+    return getConnection()
+      .getRepository(Submission)
+      .findOne({ where: { project: this, user } })
+  }
 }

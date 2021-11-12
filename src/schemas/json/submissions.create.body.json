@@ -1,0 +1,14 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "type": "object",
+  "properties": {
+    "projectId": {
+      "$ref": "src/schemas/json/multipart.field.number.json"
+    },
+    "file": {
+      "$ref": "src/schemas/json/multipart.file.json"
+    }
+  },
+  "additionalProperties": false,
+  "required": ["projectId", "file"]
+}

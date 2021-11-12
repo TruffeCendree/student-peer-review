@@ -1,6 +1,7 @@
 import { Column, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
 import { Project } from './project'
 import { Session } from './session'
+import { Submission } from './submission'
 
 @Entity()
 export class User {
@@ -25,4 +26,7 @@ export class User {
 
   @OneToMany(() => Session, session => session.user)
   sessions!: Promise<Session[]>
+
+  @OneToMany(() => Submission, submission => submission.user)
+  submissions!: Promise<Submission[]>
 }
