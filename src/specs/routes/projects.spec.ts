@@ -1,10 +1,9 @@
 import { expect } from 'chai'
-import { sign } from 'cookie-signature'
-import { COOKIE_NAME, COOKIE_SECRET } from '../../lib/dotenv'
 import { server } from '../../lib/fastify'
 import { ProjectsIndexResponse } from '../../schemas/types/projects.index.response'
 import { createProjectFixture } from '../fixtures/projects-fixtures'
 import { createSessionFixture } from '../fixtures/sessions-fixtures'
+import { loginAs } from '../spec-helper'
 
 describe('/projects', function () {
   describe('#index', function () {
@@ -14,8 +13,7 @@ describe('/projects', function () {
       const project2 = await createProjectFixture({ users: [session.user] })
       const project3 = await createProjectFixture()
 
-      const cookies = { [COOKIE_NAME]: sign(session.id, COOKIE_SECRET) }
-      const response = await server.inject({ method: 'GET', url: '/projects', cookies })
+      const response = await server.inject({ method: 'GET', url: '/projects', cookies: loginAs(session) })
       expect(response.statusCode).to.eq(200)
 
       const json = response.json<ProjectsIndexResponse>()

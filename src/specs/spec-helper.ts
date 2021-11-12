@@ -1,4 +1,7 @@
+import { sign } from 'cookie-signature'
 import { getConnection } from 'typeorm'
+import { Session } from '../entities/session'
+import { COOKIE_NAME, COOKIE_SECRET } from '../lib/dotenv'
 import { initConnection } from '../lib/typeorm'
 
 before(async function () {
@@ -27,4 +30,8 @@ async function cleanupWith(mode: 'truncation' | 'deletion') {
   }
 
   await conn.query('SET FOREIGN_KEY_CHECKS = 1;')
+}
+
+export function loginAs(session: Session) {
+  return { [COOKIE_NAME]: sign(session.id, COOKIE_SECRET) }
 }
