@@ -7,7 +7,7 @@ export const canIndexProject: PolicyActionIndex = async function canIndexProject
   return !!session
 }
 
-export async function projectPolicyScope(session: Session) {
+export function projectPolicyScope(session: Session) {
   return createQueryBuilder(Project, Project.name)
     .innerJoin('user_projects_project', 'user_projects_project', 'user_projects_project.projectId = Project.id')
     .where('user_projects_project.userId = :userId', { userId: session.userId })

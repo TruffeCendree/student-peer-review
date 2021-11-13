@@ -5,7 +5,7 @@
  * and run json-schema-to-typescript to regenerate this file.
  */
 
-export interface SubmissionsCreateResponse {
+export type SubmissionsIndexResponse = {
   id: number;
   fileUrl: string;
-}
+}[];

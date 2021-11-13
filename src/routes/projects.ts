@@ -13,8 +13,7 @@ export async function projectsRoutes(fastify: FastifyInstance) {
     },
     handler: async function index(request): Promise<ProjectsIndexResponse> {
       await authorizeOfFail(canIndexProject, request.session, null)
-      const projects = (await projectPolicyScope(request.session!)).getMany()
-      return projects
+      return projectPolicyScope(request.session!).getMany()
     }
   })
 }
