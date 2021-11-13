@@ -4,12 +4,12 @@
   "description": "A web-based peer review for animating tutorial sessions",
   "main": "index.js",
   "scripts": {
-    "console": "NODE_ENV=development node --experimental-repl-await dist/server/bin/console.js",
+    "console": "node --experimental-repl-await dist/server/bin/console.js",
     "compile-schemas": "json2ts -i src/schemas/json -o src/schemas/types",
     "lint": "eslint --fix src",
     "prettier": "prettier -w src",
     "semantic-release": "semantic-release",
-    "start-dev": "NODE_ENV=development node dist/server/index.js | npx pino-pretty",
+    "start-dev": "node dist/server/index.js | npx pino-pretty",
     "test": "NODE_ENV=test nyc --reporter=html mocha --recursive dist/server/specs --exit",
     "watch": "tsc --watch"
   },

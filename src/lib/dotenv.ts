@@ -1,7 +1,7 @@
 import { config } from 'dotenv'
 import * as path from 'path'
 
-export const NODE_ENV = getOrThrow('NODE_ENV') as 'test' | 'development' | 'production'
+export const NODE_ENV = (process.env.NODE_ENV || 'development') as 'test' | 'development' | 'production'
 
 // config() does not override loaded env variable, so load overrides first
 if (NODE_ENV === 'test') config({ path: path.resolve(process.cwd(), '.env.test') })
