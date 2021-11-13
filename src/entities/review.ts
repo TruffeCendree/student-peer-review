@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm'
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn, RelationId } from 'typeorm'
 import { Submission } from './submission'
 
 enum Comparison {
@@ -15,8 +15,14 @@ export class Review {
   @ManyToOne(() => Submission, submission => submission.receivedReviews)
   reviewedSubmission!: Promise<Submission>
 
+  @RelationId((review: Review) => review.reviewedSubmission)
+  reviewedSubmissionId!: number
+
   @ManyToOne(() => Submission, submission => submission.authoredReviews)
   reviewerSubmission!: Promise<Submission>
+
+  @RelationId((review: Review) => review.reviewerSubmission)
+  reviewerSubmissionId!: number
 
   @Column({ type: 'text', nullable: true })
   comment!: string | null
