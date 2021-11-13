@@ -15,7 +15,7 @@ declare module 'fastify' {
 export async function saveSession(reply: FastifyReply, user: User) {
   const id = (await promisify(randomBytes)(64)).toString('base64')
   await getRepository(Session).save({ id, user })
-  void reply.setCookie(COOKIE_NAME, id, { signed: COOKIE_SIGNED, httpOnly: COOKIE_HTTP_ONLY, secure: COOKIE_SECURE })
+  void reply.setCookie(COOKIE_NAME, id, { signed: COOKIE_SIGNED, httpOnly: COOKIE_HTTP_ONLY, secure: COOKIE_SECURE, path: '/' })
 }
 
 export async function loadSession(request: FastifyRequest) {
