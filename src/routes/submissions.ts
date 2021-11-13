@@ -1,4 +1,4 @@
-import fastify, { FastifyInstance } from 'fastify'
+import { FastifyInstance } from 'fastify'
 import { Submission } from '../entities/submission'
 import { User } from '../entities/user'
 import { authorizeOfFail } from '../policies/policy'

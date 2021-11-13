@@ -6,7 +6,11 @@ import { getRepository } from 'typeorm'
 import { Project } from '../../entities/project'
 import { buildProjectFixture } from './projects-fixtures'
 
-type SubmissionFixtureOptions = { user?: User, project?: Project, noProject?: boolean }
+interface SubmissionFixtureOptions {
+  user?: User
+  project?: Project
+  noProject?: boolean
+}
 
 export function buildSubmissionFixture(opts: SubmissionFixtureOptions = {}) {
   const submission = new Submission()
