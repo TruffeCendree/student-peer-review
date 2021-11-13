@@ -6,7 +6,7 @@ export class Session {
   @PrimaryColumn()
   id!: string
 
-  @ManyToOne(() => User, { eager: true, cascade: ['insert'] })
+  @ManyToOne(() => User, { eager: true, cascade: ['insert'], nullable: false })
   user!: User
 
   @RelationId((session: Session) => session.user)

@@ -12,13 +12,13 @@ export class Review {
   @PrimaryGeneratedColumn()
   id!: number
 
-  @ManyToOne(() => Submission, submission => submission.receivedReviews)
+  @ManyToOne(() => Submission, submission => submission.receivedReviews, { cascade: ['insert'], nullable: false })
   reviewedSubmission!: Promise<Submission>
 
   @RelationId((review: Review) => review.reviewedSubmission)
   reviewedSubmissionId!: number
 
-  @ManyToOne(() => Submission, submission => submission.authoredReviews)
+  @ManyToOne(() => Submission, submission => submission.authoredReviews, { cascade: ['insert'], nullable: false })
   reviewerSubmission!: Promise<Submission>
 
   @RelationId((review: Review) => review.reviewerSubmission)
@@ -28,5 +28,5 @@ export class Review {
   comment!: string | null
 
   @Column({ type: 'enum', enum: Comparison, nullable: true })
-  comparison!: Comparison | null
+  comparison!: 'worse' | 'similar' | 'better' | null
 }

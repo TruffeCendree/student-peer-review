@@ -1,0 +1,15 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "type": "object",
+  "properties": {
+    "comment": {
+      "type": "string"
+    },
+    "comparison": {
+      "type": "string",
+      "enum": ["worse", "similar", "better"]
+    }
+  },
+  "additionalProperties": false,
+  "required": ["comment", "comparison"]
+}

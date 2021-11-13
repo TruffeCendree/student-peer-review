@@ -62,6 +62,8 @@ export class Project {
         .limit(missingReviews)
         .getMany()
 
+      const newReviews = []
+
       for (const newReviewer of newReviewers) {
         const review1 = new Review()
         review1.reviewedSubmission = Promise.resolve(submission)
@@ -70,8 +72,10 @@ export class Project {
         const review2 = new Review()
         review2.reviewedSubmission = Promise.resolve(newReviewer)
         review2.reviewerSubmission = Promise.resolve(submission)
-        await getRepository(Review).save([review1, review2])
+        newReviews.push(review1, review2)
       }
+
+      await getRepository(Review).save(newReviews)
     }
   }
 }

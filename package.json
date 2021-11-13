@@ -10,7 +10,7 @@
     "prettier": "prettier -w src",
     "semantic-release": "semantic-release",
     "start-dev": "node dist/server/index.js | npx pino-pretty",
-    "test": "NODE_ENV=test mocha --recursive dist/server/specs --exit",
+    "test": "NODE_ENV=test mocha --recursive dist/server/specs --exit --async-stack-traces",
     "coverage": "nyc --reporter=html npm run test",
     "watch": "tsc --watch"
   },

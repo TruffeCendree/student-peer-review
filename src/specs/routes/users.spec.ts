@@ -10,7 +10,7 @@ describe('/users', function () {
       const session = await createSessionFixture()
       const response = await server.inject({ method: 'GET', url: '/users/me', cookies: loginAs(session) })
       expect(response.statusCode).to.eq(200)
-      expect(response.json()).to.haveOwnProperty('id').equal(session.user.id)
+      expect(response.json()).to.haveOwnProperty('id').equal(session.userId)
       expect(response.json()).to.not.haveOwnProperty('loginToken')
     })
 

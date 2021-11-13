@@ -17,7 +17,7 @@ describe('Project', function () {
       let project = await createProjectFixture({ userCount: 4, withSubmission: true })
       await project.assignSubmissions()
       project = await getRepository(Project).findOneOrFail(project.id) // reload
-      
+
       expect((await project.submissions).length).to.eq(4)
       for (const submission of await project.submissions) {
         expect((await submission.receivedReviews).length).to.eq(2)

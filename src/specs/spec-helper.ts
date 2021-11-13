@@ -23,7 +23,8 @@ async function cleanupWith(mode: 'truncation' | 'deletion') {
   const conn = getConnection()
 
   for (const entity of entities) {
-    if (mode === 'truncation') await conn.query(`SET FOREIGN_KEY_CHECKS = 0; TRUNCATE ${entity.tableName}; SET FOREIGN_KEY_CHECKS = 1;`)
+    if (mode === 'truncation')
+      await conn.query(`SET FOREIGN_KEY_CHECKS = 0; TRUNCATE ${entity.tableName}; SET FOREIGN_KEY_CHECKS = 1;`)
     else await conn.query(`SET FOREIGN_KEY_CHECKS = 0; DELETE FROM ${entity.tableName}; SET FOREIGN_KEY_CHECKS = 1;`)
   }
 }

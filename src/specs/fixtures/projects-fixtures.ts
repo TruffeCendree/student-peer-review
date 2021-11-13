@@ -20,7 +20,7 @@ export async function buildProjectFixture(opts: ProjectFixtureOptions = {}) {
 
   if (opts.withSubmission) {
     if (!(await project.users)) throw new Error('opts.withSubmission requires that users are assigned to the project')
-    project.submissions = project.users.then(users => users.map(user => buildSubmissionFixture({ user })))
+    project.submissions = project.users.then(users => users.map(user => buildSubmissionFixture({ user, noProject: true })))
   }
 
   return project

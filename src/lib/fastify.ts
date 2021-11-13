@@ -13,6 +13,7 @@ import { loadSession } from './session'
 import { swaggerConfig } from './swagger'
 import * as multipartFieldNumberSchema from '../schemas/json/multipart.field.number.json'
 import * as multipartFileSchema from '../schemas/json/multipart.file.json'
+import { reviewsRoutes } from '../routes/reviews'
 
 export const server = fastify({ logger: FASTIFY_LOGGING })
   .addSchema(multipartFieldNumberSchema)
@@ -26,6 +27,7 @@ export const server = fastify({ logger: FASTIFY_LOGGING })
   .register(userRoutes, { prefix: '/users' })
   .register(projectsRoutes, { prefix: '/projects' })
   .register(submissionsRoutes, { prefix: '/submissions' })
+  .register(reviewsRoutes, { prefix: '/reviews' })
   .setErrorHandler((error, request, reply) => {
     // based on https://github.com/fastify/fastify/blob/1e94070992d911a81a26597c25f2d35ae65f3d91/fastify.js#L74
     if (error instanceof UnauthorizedError) {

@@ -14,13 +14,13 @@ export class Submission {
   @Column()
   fileUrl!: string
 
-  @ManyToOne(() => User, user => user.submissions, { cascade: ['insert'] })
+  @ManyToOne(() => User, user => user.submissions, { cascade: ['insert'], nullable: false })
   user!: Promise<User>
 
   @RelationId((submission: Submission) => submission.user)
   userId!: number
 
-  @ManyToOne(() => Project, project => project.submissions)
+  @ManyToOne(() => Project, project => project.submissions, { cascade: ['insert'], nullable: false })
   project!: Promise<Project>
 
   @RelationId((submission: Submission) => submission.project)
