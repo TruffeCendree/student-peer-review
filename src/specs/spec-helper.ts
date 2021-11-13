@@ -22,14 +22,10 @@ async function cleanupWith(mode: 'truncation' | 'deletion') {
   const entities = getConnection().entityMetadatas
   const conn = getConnection()
 
-  await conn.query('SET FOREIGN_KEY_CHECKS = 0;')
-
   for (const entity of entities) {
-    if (mode === 'truncation') await conn.query(`TRUNCATE ${entity.tableName};`)
-    else await conn.query(`DELETE FROM ${entity.tableName};`)
+    if (mode === 'truncation') await conn.query(`SET FOREIGN_KEY_CHECKS = 0; TRUNCATE ${entity.tableName}; SET FOREIGN_KEY_CHECKS = 1;`)
+    else await conn.query(`SET FOREIGN_KEY_CHECKS = 0; DELETE FROM ${entity.tableName}; SET FOREIGN_KEY_CHECKS = 1;`)
   }
-
-  await conn.query('SET FOREIGN_KEY_CHECKS = 1;')
 }
 
 export function loginAs(session: Session) {
