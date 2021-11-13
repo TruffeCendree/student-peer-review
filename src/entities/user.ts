@@ -27,6 +27,6 @@ export class User {
   @OneToMany(() => Session, session => session.user)
   sessions!: Promise<Session[]>
 
-  @OneToMany(() => Submission, submission => submission.user)
+  @ManyToMany(() => Submission, submission => submission.users)
   submissions!: Promise<Submission[]>
 }

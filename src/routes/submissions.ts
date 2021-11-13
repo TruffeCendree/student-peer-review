@@ -21,7 +21,7 @@ export async function submissionsRoutes(fastify: FastifyInstance) {
     schema: {
       response: { 200: submissionsIndexResponse }
     },
-    handler: async function index (request): Promise<SubmissionsIndexResponse> {
+    handler: async function index(request): Promise<SubmissionsIndexResponse> {
       await authorizeOfFail(canIndexProject, request.session, null)
       return submissionPolicyScope(request.session!).getMany()
     }
@@ -35,7 +35,7 @@ export async function submissionsRoutes(fastify: FastifyInstance) {
     handler: async function create(request): Promise<SubmissionsSerialized> {
       const submission = new Submission()
       const project = await getRepository(Project).findOneOrFail(request.body.projectId.value)
-      submission.user = Promise.resolve(request.session?.user as User)
+      submission.users = Promise.resolve([request.session?.user as User])
       submission.project = Promise.resolve(project)
       await authorizeOfFail(canCreateSubmission, request.session, submission)
       await submission.setFile(request.body.file as any as MultipartFile)

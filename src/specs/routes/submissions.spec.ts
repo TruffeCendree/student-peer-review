@@ -11,7 +11,7 @@ import { loginAs } from '../spec-helper'
 
 describe('/submissions', function () {
   describe('#index', function () {
-    it("should return submissions created or reviewed by the user", async function () {
+    it('should return submissions created or reviewed by the user', async function () {
       const session = await createSessionFixture()
       const userSubmission = await createSubmissionFixture({ user: session.user })
       const reviewedSubmission = await createSubmissionFixture()
@@ -20,7 +20,7 @@ describe('/submissions', function () {
 
       const response = await server.inject({ url: '/submissions', method: 'GET', cookies: loginAs(session) })
       expect(response.statusCode).to.eq(200)
-      
+
       const json = response.json<SubmissionsIndexResponse>()
       expect(json.map(_ => _.id)).to.have.members([userSubmission.id, reviewedSubmission.id])
       expect(json.map(_ => _.id)).to.not.include(hiddenSubmission.id)

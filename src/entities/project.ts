@@ -30,7 +30,13 @@ export class Project {
   submissions!: Promise<Submission[]>
 
   getSubmissionForUser(user: User) {
-    return getRepository(Submission).findOne({ where: { project: this, user } })
+    return getRepository(Submission)
+      .createQueryBuilder()
+      .innerJoin('Submission.users', 'Users')
+      .where({ project: this })
+      .andWhere('Users.id = :userId')
+      .setParameter('userId', user.id)
+      .getOne()
   }
 
   private getSubmissionsWithMissingReviewsAs(role: 'reviewer' | 'reviewed') {

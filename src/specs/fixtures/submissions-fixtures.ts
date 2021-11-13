@@ -15,7 +15,7 @@ interface SubmissionFixtureOptions {
 export function buildSubmissionFixture(opts: SubmissionFixtureOptions = {}) {
   const submission = new Submission()
   submission.fileUrl = `public/submissions/${uuidv4()}-test.txt`
-  submission.user = Promise.resolve(opts.user || buildUserFixture())
+  submission.users = Promise.resolve([opts.user || buildUserFixture()])
   if (!opts.noProject) submission.project = Promise.resolve(opts.project || buildProjectFixture())
   return submission
 }

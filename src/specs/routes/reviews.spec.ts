@@ -10,7 +10,7 @@ describe('/reviews', function () {
   describe('#update', function () {
     it('should update the review as reviewer', async function () {
       const review = await createReviewFixture()
-      const user = await (await review.reviewerSubmission).user
+      const [user] = await (await review.reviewerSubmission).users
       const cookies = loginAs(await createSessionFixture({ user }))
       const payload: ReviewsUpdateBody = { comment: 'Good job, amazing', comparison: 'better' }
       const response = await server.inject({ url: `/reviews/${review.id}`, method: 'PATCH', cookies, payload })

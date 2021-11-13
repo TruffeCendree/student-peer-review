@@ -1,7 +1,16 @@
 import { MultipartFile } from 'fastify-multipart'
 import { v4 as uuidv4 } from 'uuid'
 import { mkdir, writeFile } from 'fs/promises'
-import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, RelationId } from 'typeorm'
+import {
+  Column,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  RelationId
+} from 'typeorm'
 import { Project } from './project'
 import { User } from './user'
 import { Review } from './review'
@@ -14,11 +23,9 @@ export class Submission {
   @Column()
   fileUrl!: string
 
-  @ManyToOne(() => User, user => user.submissions, { cascade: ['insert'], nullable: false })
-  user!: Promise<User>
-
-  @RelationId((submission: Submission) => submission.user)
-  userId!: number
+  @ManyToMany(() => User, user => user.submissions, { cascade: ['insert'], nullable: false })
+  @JoinTable()
+  users!: Promise<User[]>
 
   @ManyToOne(() => Project, project => project.submissions, { cascade: ['insert'], nullable: false })
   project!: Promise<Project>
