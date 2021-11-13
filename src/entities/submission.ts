@@ -19,7 +19,7 @@ export class Submission {
   @ManyToOne(() => Project, project => project.submissions)
   project!: Promise<Project>
 
-  async setFile (file: MultipartFile) {
+  async setFile(file: MultipartFile) {
     this.fileUrl = `public/submissions/${uuidv4()}-${file.filename}`
     await mkdir('public/submissions', { recursive: true })
     await writeFile(this.fileUrl, await file.toBuffer())
