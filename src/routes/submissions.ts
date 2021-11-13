@@ -6,7 +6,7 @@ import { canCreateSubmission } from '../policies/submissions-policy'
 import { SubmissionsCreateBody } from '../schemas/types/submissions.create.body'
 import * as submissionsCreateBodySchema from '../schemas/json/submissions.create.body.json'
 import * as submissionsCreateResponseSchema from '../schemas/json/submissions.create.response.json'
-import { getConnection } from 'typeorm'
+import { getRepository } from 'typeorm'
 import { Project } from '../entities/project'
 import { MultipartFile } from 'fastify-multipart'
 import { SubmissionsCreateResponse } from '../schemas/types/submissions.create.response'
@@ -19,12 +19,12 @@ export async function submissionsRoutes(fasify: FastifyInstance) {
     },
     handler: async function create(request): Promise<SubmissionsCreateResponse> {
       const submission = new Submission()
-      const project = await getConnection().getRepository(Project).findOneOrFail(request.body.projectId.value)
+      const project = await getRepository(Project).findOneOrFail(request.body.projectId.value)
       submission.user = Promise.resolve(request.session?.user as User)
       submission.project = Promise.resolve(project)
       await authorizeOfFail(canCreateSubmission, request.session, submission)
       await submission.setFile(request.body.file as any as MultipartFile)
-      await getConnection().getRepository(Submission).save(submission)
+      await getRepository(Submission).save(submission)
       return submission
     }
   })

@@ -4,7 +4,7 @@ import { SessionsInviteBody } from '../schemas/types/sessions.invite.body'
 import * as sessionsCreateQuerystringSchema from '../schemas/json/sessions.create.querystring.json'
 import * as sessionsInviteBodySchema from '../schemas/json/sessions.invite.body.json'
 import { User } from '../entities/user'
-import { getConnection } from 'typeorm'
+import { getRepository } from 'typeorm'
 import { saveSession } from '../lib/session'
 import { promisify } from 'util'
 import { randomBytes } from 'crypto'
@@ -19,10 +19,9 @@ export async function sessionRoutes(fastify: FastifyInstance) {
       // should be handled by the schema validation, but is too critical so we check it again.
       if (!request.query.token) throw new Error('Never lookup for a null loginToken, it will match the wrong user.')
 
-      const userRepository = getConnection().getRepository(User)
-      const user = await userRepository.findOneOrFail({ where: { loginToken: request.query.token } })
+      const user = await getRepository(User).findOneOrFail({ where: { loginToken: request.query.token } })
       user.loginToken = null
-      await userRepository.save(user)
+      await getRepository(User).save(user)
 
       await saveSession(reply, user)
       return { success: true }
@@ -34,10 +33,9 @@ export async function sessionRoutes(fastify: FastifyInstance) {
       body: sessionsInviteBodySchema
     },
     handler: async function invite(request) {
-      const userRepository = getConnection().getRepository(User)
-      const user = await userRepository.findOneOrFail({ where: { email: request.body.email } })
+      const user = await getRepository(User).findOneOrFail({ where: { email: request.body.email } })
       user.loginToken = (await promisify(randomBytes)(64)).toString('base64')
-      await userRepository.save(user)
+      await getRepository(User).save(user)
       await sendInvitation(user)
       return { success: true }
     }

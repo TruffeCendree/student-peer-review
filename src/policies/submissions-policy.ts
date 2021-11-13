@@ -1,4 +1,4 @@
-import { getConnection } from 'typeorm'
+import { createQueryBuilder } from 'typeorm'
 import { Project } from '../entities/project'
 import { Submission } from '../entities/submission'
 import { User } from '../entities/user'
@@ -18,8 +18,7 @@ export const canCreateSubmission: PolicyAction<Submission> = async function canC
 }
 
 async function isUserRegistredToProject(user: User, project: Project) {
-  return !!(await getConnection()
-    .createQueryBuilder('user_projects_project', 'user_projects_project')
+  return !!(await createQueryBuilder('user_projects_project', 'user_projects_project')
     .where({ userId: user.id, projectId: project.id })
     .getRawOne())
 }

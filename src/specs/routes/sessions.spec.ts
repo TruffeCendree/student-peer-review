@@ -1,7 +1,7 @@
 import { server } from '../../lib/fastify'
 import { createUserFixture } from '../fixtures/users-fixtures'
 import { expect } from 'chai'
-import { getConnection } from 'typeorm'
+import { getRepository } from 'typeorm'
 import { User } from '../../entities/user'
 import { SessionsInviteBody } from '../../schemas/types/sessions.invite.body'
 
@@ -16,7 +16,7 @@ describe('/sessions', function () {
       expect((await user.sessions).length).to.eq(1)
 
       // reload the user entity
-      user = await getConnection().getRepository(User).findOneOrFail(user.id)
+      user = await getRepository(User).findOneOrFail(user.id)
       expect(user.loginToken).to.be.null
     })
   })

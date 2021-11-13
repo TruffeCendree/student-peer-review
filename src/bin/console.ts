@@ -2,7 +2,7 @@ import * as repl from 'repl'
 import { promisify } from 'util'
 import { initConnection } from '../lib/typeorm'
 
-async function run () {
+async function run() {
   const conn = await initConnection()
   console.log('Current context includes a `conn` (Connection) and typeorm entities.')
 

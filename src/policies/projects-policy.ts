@@ -1,4 +1,4 @@
-import { getConnection } from 'typeorm'
+import { createQueryBuilder } from 'typeorm'
 import { Project } from '../entities/project'
 import { Session } from '../entities/session'
 import { PolicyActionIndex } from './policy'
@@ -8,8 +8,7 @@ export const canIndexProject: PolicyActionIndex = async function canIndexProject
 }
 
 export async function projectPolicyScope(session: Session) {
-  return getConnection()
-    .createQueryBuilder(Project, 'project')
-    .innerJoin('project.users', 'user')
-    .where('user.id = :userId', { userId: session.user.id })
+  return createQueryBuilder(Project, Project.name)
+    .innerJoin('user_projects_project', 'user_projects_project', 'user_projects_project.projectId = Project.id')
+    .where('user_projects_project.userId = :userId', { userId: session.user.id })
 }

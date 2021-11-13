@@ -1,6 +1,6 @@
 import { User } from '../../entities/user'
 import * as faker from 'faker'
-import { getConnection } from 'typeorm'
+import { getRepository } from 'typeorm'
 
 type UserFixtureOptions = Partial<Pick<User, 'loginToken'>>
 
@@ -14,5 +14,5 @@ export function buildUserFixture(opts: UserFixtureOptions = {}) {
 }
 
 export function createUserFixture(opts: UserFixtureOptions = {}) {
-  return getConnection().getRepository(User).save(buildUserFixture(opts))
+  return getRepository(User).save(buildUserFixture(opts))
 }

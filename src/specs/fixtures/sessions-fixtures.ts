@@ -1,4 +1,4 @@
-import { getConnection } from 'typeorm'
+import { getRepository } from 'typeorm'
 import { Session } from '../../entities/session'
 import { buildUserFixture } from './users-fixtures'
 import * as faker from 'faker'
@@ -11,5 +11,5 @@ export function buildSessionFixture() {
 }
 
 export async function createSessionFixture() {
-  return getConnection().getRepository(Session).save(buildSessionFixture())
+  return getRepository(Session).save(buildSessionFixture())
 }

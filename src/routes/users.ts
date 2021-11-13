@@ -1,5 +1,5 @@
 import { FastifyInstance } from 'fastify'
-import { getConnection } from 'typeorm'
+import { getRepository } from 'typeorm'
 import { User } from '../entities/user'
 import { authorizeOfFail } from '../policies/policy'
 import { canShowUser } from '../policies/users-policy'
@@ -15,11 +15,8 @@ export async function userRoutes(fastify: FastifyInstance) {
       response: { 200: usersShowResponseSchema }
     },
     handler: async function show(request): Promise<UsersShowResponse> {
-      const user =
-        request.params.id === 'me'
-          ? (request.session?.user as User)
-          : await getConnection().getRepository(User).findOneOrFail(request.params.id)
-
+      const isMe = request.params.id === 'me'
+      const user = isMe ? (request.session?.user as User) : await getRepository(User).findOneOrFail(request.params.id)
       await authorizeOfFail(canShowUser, request.session, user)
       return user
     }

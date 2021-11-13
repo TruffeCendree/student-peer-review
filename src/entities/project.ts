@@ -1,4 +1,4 @@
-import { Column, Entity, getConnection, ManyToMany, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
+import { Column, Entity, getRepository, ManyToMany, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
 import { Submission } from './submission'
 import { User } from './user'
 
@@ -20,8 +20,6 @@ export class Project {
   submissions!: Promise<Submission[]>
 
   getSubmissionForUser(user: User) {
-    return getConnection()
-      .getRepository(Submission)
-      .findOne({ where: { project: this, user } })
+    return getRepository(Submission).findOne({ where: { project: this, user } })
   }
 }

@@ -1,4 +1,4 @@
-import { getConnection } from 'typeorm'
+import { getRepository } from 'typeorm'
 import { Project } from '../../entities/project'
 import { User } from '../../entities/user'
 import * as faker from 'faker'
@@ -14,5 +14,5 @@ export function buildProjectFixture(opts: ProjectFixtureOptions = {}) {
 }
 
 export function createProjectFixture(opts: ProjectFixtureOptions = {}) {
-  return getConnection().getRepository(Project).save(buildProjectFixture(opts))
+  return getRepository(Project).save(buildProjectFixture(opts))
 }
