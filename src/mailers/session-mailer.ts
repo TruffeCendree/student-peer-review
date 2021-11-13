@@ -14,7 +14,7 @@ export async function sendInvitation(user: User) {
 Hello ${user.firstname},
 
 Use the above link to login on the peer review app for the practical activity.
-${BASE_URL}/?token=${user.loginToken}
+${BASE_URL}/sessions/establish?token=${user.loginToken}
 
 This link works only once, but can be renewed multiple times.
 

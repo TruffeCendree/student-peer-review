@@ -11,11 +11,11 @@ import { randomBytes } from 'crypto'
 import { sendInvitation } from '../mailers/session-mailer'
 
 export async function sessionRoutes(fastify: FastifyInstance) {
-  fastify.post<{ Querystring: SessionsCreateQuerystring }>('/', {
+  fastify.get<{ Querystring: SessionsCreateQuerystring }>('/establish', {
     schema: {
       querystring: sessionsCreateQuerystringSchema
     },
-    handler: async function create(request, reply) {
+    handler: async function establish(request, reply) {
       // should be handled by the schema validation, but is too critical so we check it again.
       if (!request.query.token) throw new Error('Never lookup for a null loginToken, it will match the wrong user.')
 
@@ -34,7 +34,7 @@ export async function sessionRoutes(fastify: FastifyInstance) {
     },
     handler: async function invite(request) {
       const user = await getRepository(User).findOneOrFail({ where: { email: request.body.email } })
-      user.loginToken = (await promisify(randomBytes)(64)).toString('base64')
+      user.loginToken = (await promisify(randomBytes)(64)).toString('hex')
       await getRepository(User).save(user)
       await sendInvitation(user)
       return { success: true }
