@@ -21,6 +21,7 @@ export function SubmissionCreateFormComponent({ project }: { project: ProjectsIn
 
   const submitBtnAttrs = useDisabledAsync(
     async () => {
+      if (!window.confirm('Once submitted, your delivery is immuable. Confirm?')) return false
       await createSubmision(file, project.id, secondContributor ? [secondContributor.id] : [])
       return true
     },

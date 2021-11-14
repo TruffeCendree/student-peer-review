@@ -6,7 +6,7 @@ export function useDisabledAsync(cb: () => Promise<boolean>, opts: { onlyOnce?: 
   function onClick() {
     setDisabled(true)
     cb()
-      .then(() => !opts.onlyOnce && setDisabled(false))
+      .then(success => (!opts.onlyOnce || !success) && setDisabled(false))
       .catch(() => setDisabled(false))
   }
 
