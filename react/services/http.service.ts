@@ -1,9 +1,13 @@
+import { errorsStore } from 'stores/errors.store'
+
 export const jsonHeaders = {
   Accept: 'application/json',
   'Content-Type': 'application/json'
 }
 
 export class HttpError extends Error {
+  id = Date.now()
+
   constructor(message: string, public data: any) {
     super(message)
   }
@@ -25,5 +29,7 @@ async function checkJsonStatus(response: Response) {
   const json = await response.json()
 
   if (response.status >= 200 && response.status < 300) return json
-  throw new HttpError('HTTP request failed', json)
+  const error = new HttpError(json.message || 'HTTP request failed', json)
+  errorsStore.add(error)
+  throw error
 }
