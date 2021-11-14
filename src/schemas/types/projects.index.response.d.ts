@@ -9,4 +9,9 @@ export type ProjectsIndexResponse = {
   id: number;
   name: string;
   instructions: string | null;
+  users: {
+    id: number;
+    firstname: string;
+    lastname: string;
+  }[];
 }[];

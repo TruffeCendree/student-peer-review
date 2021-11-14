@@ -6,9 +6,22 @@
     "properties": {
       "id": { "type": "number" },
       "name": { "type": "string" },
-      "instructions": { "type": ["string", "null"] }
+      "instructions": { "type": ["string", "null"] },
+      "users": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": { "type": "number" },
+            "firstname": { "type": "string" },
+            "lastname": { "type": "string" }
+          },
+          "additionalProperties": false,
+          "required": ["id", "firstname", "lastname"]
+        }
+      }
     },
     "additionalProperties": false,
-    "required": ["id", "name", "instructions"]
+    "required": ["id", "name", "instructions", "users"]
   }
 }

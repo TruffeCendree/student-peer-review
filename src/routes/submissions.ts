@@ -35,7 +35,13 @@ export async function submissionsRoutes(fastify: FastifyInstance) {
     handler: async function create(request): Promise<SubmissionsSerialized> {
       const submission = new Submission()
       const project = await getRepository(Project).findOneOrFail(request.body.projectId.value)
-      submission.users = Promise.resolve([request.session?.user as User])
+
+      const users = [request.session?.user as User]
+      if (request.body['userIds[]']?.length) {
+        users.push(...await getRepository(User).findByIds(request.body['userIds[]'].map(_ => _.value)))
+      }
+
+      submission.users = Promise.resolve(users)
       submission.project = Promise.resolve(project)
       await authorizeOfFail(canCreateSubmission, request.session, submission)
       await submission.setFile(request.body.file as any as MultipartFile)

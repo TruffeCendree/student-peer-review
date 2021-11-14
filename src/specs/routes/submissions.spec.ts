@@ -1,12 +1,15 @@
 import { expect } from 'chai'
 import * as FormData from 'form-data'
 import { createReadStream } from 'fs'
+import { getRepository } from 'typeorm'
+import { Submission } from '../../entities/submission'
 import { server } from '../../lib/fastify'
 import { SubmissionsIndexResponse } from '../../schemas/types/submissions.index.response'
 import { createProjectFixture } from '../fixtures/projects-fixtures'
 import { createReviewFixture } from '../fixtures/reviews-fixtures'
 import { createSessionFixture } from '../fixtures/sessions-fixtures'
 import { createSubmissionFixture } from '../fixtures/submissions-fixtures'
+import { createUserFixture } from '../fixtures/users-fixtures'
 import { loginAs } from '../spec-helper'
 
 describe('/submissions', function () {
@@ -30,10 +33,14 @@ describe('/submissions', function () {
   describe('#create', function () {
     it('should upload a submission', async function () {
       const session = await createSessionFixture()
-      const project = await createProjectFixture({ users: [session.user] })
+      const secondUser = await createUserFixture()
+      const thirdUser = await createUserFixture()
+      const project = await createProjectFixture({ users: [session.user, secondUser, thirdUser] })
       const formData = new FormData()
       formData.append('projectId', project.id)
       formData.append('file', createReadStream('./src/specs/supports/archive.zip'))
+      formData.append('userIds[]', secondUser.id)
+      formData.append('userIds[]', thirdUser.id)
 
       const response = await server.inject({
         url: '/submissions',
@@ -46,6 +53,11 @@ describe('/submissions', function () {
       expect(response.statusCode).to.eq(200)
       expect(response.json()).to.haveOwnProperty('id')
       expect(response.json()).to.haveOwnProperty('fileUrl')
+
+      const submission = await getRepository(Submission).findOneOrFail({ order: { id: 'DESC' } })
+      const submissionUserIds = (await submission.users).map(_ => _.id)
+      expect(submissionUserIds.length).to.eq(3)
+      expect(submissionUserIds).to.have.members([session.userId, secondUser.id, thirdUser.id])
     })
   })
 })

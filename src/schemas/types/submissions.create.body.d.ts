@@ -9,6 +9,9 @@ export interface SubmissionsCreateBody {
   projectId: {
     value: number;
   };
+  "userIds[]"?: {
+    value: number;
+  }[];
   file: {
     encoding: string;
     filename: string;
