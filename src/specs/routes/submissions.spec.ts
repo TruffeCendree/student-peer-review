@@ -31,7 +31,7 @@ describe('/submissions', function () {
   })
 
   describe('#create', function () {
-    it('should upload a submission', async function () {
+    it('should upload a submission with 3 contributors', async function () {
       const session = await createSessionFixture()
       const secondUser = await createUserFixture()
       const thirdUser = await createUserFixture()
@@ -58,6 +58,34 @@ describe('/submissions', function () {
       const submissionUserIds = (await submission.users).map(_ => _.id)
       expect(submissionUserIds.length).to.eq(3)
       expect(submissionUserIds).to.have.members([session.userId, secondUser.id, thirdUser.id])
+    })
+
+    it('should upload a submission with 2 contributors', async function () {
+      const session = await createSessionFixture()
+      const secondUser = await createUserFixture()
+      const thirdUser = await createUserFixture()
+      const project = await createProjectFixture({ users: [session.user, secondUser, thirdUser] })
+      const formData = new FormData()
+      formData.append('projectId', project.id)
+      formData.append('file', createReadStream('./src/specs/supports/archive.zip'))
+      formData.append('userIds[]', secondUser.id)
+
+      const response = await server.inject({
+        url: '/submissions',
+        method: 'POST',
+        payload: formData,
+        headers: formData.getHeaders(),
+        cookies: loginAs(session)
+      })
+
+      expect(response.statusCode).to.eq(200)
+      expect(response.json()).to.haveOwnProperty('id')
+      expect(response.json()).to.haveOwnProperty('fileUrl')
+
+      const submission = await getRepository(Submission).findOneOrFail({ order: { id: 'DESC' } })
+      const submissionUserIds = (await submission.users).map(_ => _.id)
+      expect(submissionUserIds.length).to.eq(2)
+      expect(submissionUserIds).to.have.members([session.userId, secondUser.id])
     })
   })
 })

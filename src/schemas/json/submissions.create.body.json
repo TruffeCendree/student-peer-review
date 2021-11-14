@@ -6,10 +6,16 @@
       "$ref": "src/schemas/json/multipart.field.number.json"
     },
     "userIds[]": {
-      "type": "array",
-      "items": {
-        "$ref": "src/schemas/json/multipart.field.number.json"
-      }
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {
+            "$ref": "src/schemas/json/multipart.field.number.json"
+          }
+        }, {
+          "$ref": "src/schemas/json/multipart.field.number.json"
+        }
+      ]
     },
     "file": {
       "$ref": "src/schemas/json/multipart.file.json"
