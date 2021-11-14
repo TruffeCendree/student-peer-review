@@ -24,7 +24,8 @@ module.exports = {
   resolve: {
     alias: {
       // Ensure react is never duplicated (possible if npm create multiple instance of react in node_modules subdirectories)
-      react: path.resolve(path.join(__dirname, 'node_modules', 'react'))
+      react: path.resolve(path.join(__dirname, 'node_modules', 'react')),
+      '@mui/styled-engine': '@mui/styled-engine-sc'
     },
     modules: [path.resolve('./react'), 'node_modules'],
     extensions: ['.tsx', '.ts', '.js']
