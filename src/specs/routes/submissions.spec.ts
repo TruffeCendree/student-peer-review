@@ -33,7 +33,7 @@ describe('/submissions', function () {
       const project = await createProjectFixture({ users: [session.user] })
       const formData = new FormData()
       formData.append('projectId', project.id)
-      formData.append('file', createReadStream('./package.json'))
+      formData.append('file', createReadStream('./src/specs/supports/archive.zip'))
 
       const response = await server.inject({
         url: '/submissions',
