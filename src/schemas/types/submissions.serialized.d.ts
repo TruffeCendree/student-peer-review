@@ -8,4 +8,5 @@
 export interface SubmissionsSerialized {
   id: number;
   fileUrl: string;
+  userIds: number[];
 }

@@ -17,8 +17,8 @@ export async function httpGet<T>(url: string): Promise<T> {
   return checkJsonStatus(await fetch(url, { method: 'GET', headers: jsonHeaders }))
 }
 
-export async function httpPost<T>(url: string, body: unknown): Promise<T> {
-  return checkJsonStatus(await fetch(url, { method: 'POST', headers: jsonHeaders, body: JSON.stringify(body) }))
+export async function httpPatch<T>(url: string, body: unknown): Promise<T> {
+  return checkJsonStatus(await fetch(url, { method: 'PATCH', headers: jsonHeaders, body: JSON.stringify(body) }))
 }
 
 export async function httpPostMultipart<T>(url: string, body: FormData): Promise<T> {

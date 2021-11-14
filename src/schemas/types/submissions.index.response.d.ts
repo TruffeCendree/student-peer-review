@@ -8,4 +8,5 @@
 export type SubmissionsIndexResponse = {
   id: number;
   fileUrl: string;
+  userIds: number[];
 }[];

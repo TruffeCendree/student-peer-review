@@ -4,12 +4,20 @@ import { SubmissionCreateFormComponent } from './submission-create-form.componen
 import Accordion from '@mui/material/Accordion'
 import AccordionSummary from '@mui/material/AccordionSummary'
 import AccordionDetails from '@mui/material/AccordionDetails'
+import Paper from '@mui/material/Paper'
 import Typography from '@mui/material/Typography'
-import Divider from '@mui/material/Divider'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import CodeIcon from '@mui/icons-material/Code'
+import { useObservable } from 'hooks/use-obserable.hook'
+import { submissionsQuery } from 'queries/submissions.query'
+import { SubmissionShowOwned } from './submission-show-owned.component'
+import { SubmissionShowReviewed } from './submission-show-reviewed.component'
+import { Alert } from '@mui/material'
 
 export function ProjectShowComponent({ project }: { project: ProjectsIndexResponse[0] }) {
+  const ownedSubmission = useObservable(submissionsQuery.ownedSubmission$, null)
+  const reviewedSubmissions = useObservable(submissionsQuery.reviewedSubmissions$, [])
+
   return (
     <Accordion>
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
@@ -18,13 +26,28 @@ export function ProjectShowComponent({ project }: { project: ProjectsIndexRespon
       </AccordionSummary>
 
       <AccordionDetails>
-        <Typography style={{ whiteSpace: 'pre-wrap' }} paragraph>
-          {project.instructions}
-        </Typography>
+        {project.instructions && (
+          <React.Fragment>
+            <Typography style={{ fontWeight: 'bold' }}>Activity introduction</Typography>
+            <Typography style={{ whiteSpace: 'pre-wrap' }}>{project.instructions}</Typography>
+          </React.Fragment>
+        )}
 
-        <Divider style={{ marginBottom: '1em' }} />
+        <div style={{ padding: '1em 0' }}>
+          {!ownedSubmission && <SubmissionCreateFormComponent project={project} />}
+          {ownedSubmission && <SubmissionShowOwned submission={ownedSubmission} project={project} />}
+        </div>
 
-        <SubmissionCreateFormComponent project={project} />
+        <Typography style={{ fontWeight: 'bold' }}>Review your peer's deliveries</Typography>
+        {reviewedSubmissions.map(submission => (
+          <Paper key={submission.id} style={{ padding: '1em', marginTop: '0.5em', background: '#f9f9f9' }}>
+            <SubmissionShowReviewed submission={ownedSubmission} project={project} />
+          </Paper>
+        ))}
+
+        {reviewedSubmissions.length === 0 && (
+          <Alert severity="info">There is currently nothing to review. Please retry later.</Alert>
+        )}
       </AccordionDetails>
     </Accordion>
   )

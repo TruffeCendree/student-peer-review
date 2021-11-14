@@ -3,7 +3,9 @@ import { v4 as uuidv4 } from 'uuid'
 import { mkdir, writeFile } from 'fs/promises'
 import {
   Column,
+  createQueryBuilder,
   Entity,
+  getRepository,
   JoinTable,
   ManyToMany,
   ManyToOne,
@@ -22,7 +24,7 @@ export class Submission {
   id!: number
 
   @Column()
-  fileUrl!: string
+  fileToken!: string
 
   @ManyToMany(() => User, user => user.submissions, { cascade: ['insert'], nullable: false })
   @JoinTable()
@@ -40,13 +42,31 @@ export class Submission {
   @OneToMany(() => Review, review => review.reviewerSubmission)
   authoredReviews!: Promise<Review[]>
 
+  get fileUrl() {
+    return `/public/submissions/${this.fileToken}`
+  }
+
+  get users$() {
+    return createQueryBuilder(User, User.name)
+      .innerJoin('User.submissions', Submission.name)
+      .where('Submission.id = :submissionId')
+      .setParameter('submissionId', this.id)
+  }
+
+  get userIds() {
+    return this.users$
+      .select('User.id')
+      .getMany()
+      .then(partialUsers => partialUsers.map(_ => _.id))
+  }
+
   async setFile(file: MultipartFile) {
     if (!file.filename.toLocaleLowerCase().endsWith('.zip')) {
       throw new UnauthorizedError('You can only upload a ZIP file')
     }
 
-    this.fileUrl = `public/submissions/${uuidv4()}-${file.filename}`
+    this.fileToken = `${uuidv4()}-${file.filename}`
     await mkdir('public/submissions', { recursive: true })
-    await writeFile(this.fileUrl, await file.toBuffer())
+    await writeFile('public/submissions/' + this.fileToken, await file.toBuffer())
   }
 }

@@ -4,8 +4,12 @@
   "type": "object",
   "properties": {
     "id": { "type": "number" },
-    "fileUrl": { "type": "string" }
+    "fileUrl": { "type": "string" },
+    "userIds": {
+      "type": "array",
+      "items": { "type": "number" }
+    }
   },
   "additionalProperties": false,
-  "required": ["id", "fileUrl"]
+  "required": ["id", "fileUrl", "userIds"]
 }

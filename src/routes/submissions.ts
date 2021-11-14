@@ -23,7 +23,8 @@ export async function submissionsRoutes(fastify: FastifyInstance) {
     },
     handler: async function index(request): Promise<SubmissionsIndexResponse> {
       await authorizeOfFail(canIndexProject, request.session, null)
-      return submissionPolicyScope(request.session!).getMany()
+      const submissions = await submissionPolicyScope(request.session!).getMany()
+      return Promise.all(submissions.map(serializeSubmission))
     }
   })
 
@@ -49,7 +50,15 @@ export async function submissionsRoutes(fastify: FastifyInstance) {
       await authorizeOfFail(canCreateSubmission, request.session, submission)
       await submission.setFile(request.body.file as any as MultipartFile)
       await getRepository(Submission).save(submission)
-      return submission
+      return serializeSubmission(submission)
     }
   })
+}
+
+async function serializeSubmission(submission: Submission) {
+  return {
+    ...submission,
+    fileUrl: submission.fileUrl,
+    userIds: await submission.userIds
+  }
 }
