@@ -7,7 +7,8 @@ import { User } from '../entities/user'
 import { PolicyAction, PolicyActionIndex, UnauthorizedError, UnloggedError } from './policy'
 
 export const canIndexProject: PolicyActionIndex = async function canIndexProject(session) {
-  return !!session
+  if (!session) throw new UnloggedError()
+  return true
 }
 
 export const canCreateSubmission: PolicyAction<Submission> = async function canCreateSubmission(session, record) {

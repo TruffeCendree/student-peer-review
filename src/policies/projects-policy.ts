@@ -1,10 +1,11 @@
 import { createQueryBuilder } from 'typeorm'
 import { Project } from '../entities/project'
 import { Session } from '../entities/session'
-import { PolicyActionIndex } from './policy'
+import { PolicyActionIndex, UnloggedError } from './policy'
 
 export const canIndexProject: PolicyActionIndex = async function canIndexProject(session) {
-  return !!session
+  if (!session) throw new UnloggedError()
+  return true
 }
 
 export function projectPolicyScope(session: Session) {
