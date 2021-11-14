@@ -24,6 +24,7 @@ export const COOKIE_SECRET = getOrThrow('COOKIE_SECRET')
 export const COOKIE_SIGNED = process.env.COOKIE_SIGNED === 'true'
 export const COOKIE_HTTP_ONLY = process.env.COOKIE_HTTP_ONLY === 'true'
 export const COOKIE_SECURE = process.env.COOKIE_SECURE === 'true'
+export const COOKIE_MAX_AGE = parseInt(getOrThrow('COOKIE_MAX_AGE'), 10)
 
 export const SMTP_HOST = getOrThrow('SMTP_HOST')
 export const SMTP_PORT = parseInt(getOrThrow('SMTP_PORT'), 10)

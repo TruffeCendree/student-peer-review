@@ -4,7 +4,7 @@ import { Session } from '../entities/session'
 import { User } from '../entities/user'
 import { randomBytes } from 'crypto'
 import { promisify } from 'util'
-import { COOKIE_HTTP_ONLY, COOKIE_NAME, COOKIE_SECURE, COOKIE_SIGNED } from './dotenv'
+import { COOKIE_HTTP_ONLY, COOKIE_MAX_AGE, COOKIE_NAME, COOKIE_SECURE, COOKIE_SIGNED } from './dotenv'
 
 declare module 'fastify' {
   interface FastifyRequest {
@@ -19,6 +19,7 @@ export async function saveSession(reply: FastifyReply, user: User) {
     signed: COOKIE_SIGNED,
     httpOnly: COOKIE_HTTP_ONLY,
     secure: COOKIE_SECURE,
+    maxAge: COOKIE_MAX_AGE,
     path: '/'
   })
 }
