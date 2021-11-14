@@ -1,6 +1,12 @@
 import { createQueryBuilder } from 'typeorm'
 import { Review } from '../entities/review'
-import { PolicyAction, UnauthorizedError, UnloggedError } from './policy'
+import { Session } from '../entities/session'
+import { PolicyAction, PolicyActionIndex, UnauthorizedError, UnloggedError } from './policy'
+
+export const canIndexReview: PolicyActionIndex = async function canIndexReview(session) {
+  if (!session) throw new UnloggedError()
+  return true
+}
 
 export const canUpdateReview: PolicyAction<Review> = async function canUpdateReview(session, record) {
   if (!session) throw new UnloggedError()
@@ -11,4 +17,14 @@ export const canUpdateReview: PolicyAction<Review> = async function canUpdateRev
 
   if (!isReviewer) throw new UnauthorizedError('You are not a reviewer of this submission')
   return true
+}
+
+export function reviewsPolicyScope(session: Session) {
+  return createQueryBuilder(Review, Review.name)
+    .leftJoin('Review.reviewedSubmission', 'ReviewedSubmission')
+    .leftJoin('Review.reviewerSubmission', 'ReviewerSubmission')
+    .leftJoin('ReviewedSubmission.users', 'ReviewedSubmissionUsers')
+    .leftJoin('ReviewerSubmission.users', 'ReviewerSubmissionUsers')
+    .where('ReviewedSubmissionUsers.id = :userId OR ReviewerSubmissionUsers.id = :userId')
+    .setParameter('userId', session.userId)
 }

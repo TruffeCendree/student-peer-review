@@ -1,5 +1,6 @@
 {
   "$schema": "http://json-schema.org/schema",
+  "$id": "src/schemas/json/reviews.serialized.json",
   "type": "object",
   "properties": {
     "id": {
@@ -11,8 +12,14 @@
     "comparison": {
       "type": ["string", "null"],
       "enum": ["worse", "similar", "better"]
+    },
+    "reviewedSubmissionId": {
+      "type": "number"
+    },
+    "reviewerSubmissionId": {
+      "type": "number"
     }
   },
   "additionalProperties": false,
-  "required": ["id", "comment", "comparison"]
+  "required": ["id", "comment", "comparison", "reviewedSubmissionId", "reviewerSubmissionId"]
 }

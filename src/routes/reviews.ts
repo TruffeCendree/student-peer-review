@@ -2,15 +2,29 @@ import { FastifyInstance } from 'fastify'
 import { ParamIdOnly } from '../schemas/types/param.id-only'
 import * as paramIdOnlySchema from '../schemas/json/param.id-only.json'
 import * as reviewsUpdateBodySchema from '../schemas/json/reviews.update.body.json'
-import * as reviewsUpdateResponseSchema from '../schemas/json/reviews.update.response.json'
+import * as reviewsIndexResponseSchema from '../schemas/json/reviews.index.response.json'
+import * as reviewsSerializedSchema from '../schemas/json/reviews.serialized.json'
 import { ReviewsUpdateBody } from '../schemas/types/reviews.update.body'
-import { ReviewsUpdateResponse } from '../schemas/types/reviews.update.response'
+import { ReviewsSerialized } from '../schemas/types/reviews.serialized'
 import { authorizeOfFail } from '../policies/policy'
-import { canUpdateReview } from '../policies/reviews-policy'
+import { canIndexReview, canUpdateReview, reviewsPolicyScope } from '../policies/reviews-policy'
 import { getRepository } from 'typeorm'
 import { Review } from '../entities/review'
+import { ReviewsIndexResponse } from '../schemas/types/reviews.index.response'
 
 export async function reviewsRoutes(fastify: FastifyInstance) {
+  fastify.addSchema(reviewsSerializedSchema)
+
+  fastify.get('/', {
+    schema: {
+      response: { 200: reviewsIndexResponseSchema }
+    },
+    handler: async function (request): Promise<ReviewsIndexResponse> {
+      await authorizeOfFail(canIndexReview, request.session, null)
+      return reviewsPolicyScope(request.session!).getMany()
+    }
+  })
+
   fastify.patch<{
     Params: ParamIdOnly
     Body: ReviewsUpdateBody
@@ -18,9 +32,9 @@ export async function reviewsRoutes(fastify: FastifyInstance) {
     schema: {
       params: paramIdOnlySchema,
       body: reviewsUpdateBodySchema,
-      response: { 200: reviewsUpdateResponseSchema }
+      response: { 200: reviewsSerializedSchema }
     },
-    handler: async function update(request): Promise<ReviewsUpdateResponse> {
+    handler: async function update(request): Promise<ReviewsSerialized> {
       const review = await getRepository(Review).findOneOrFail(request.params.id)
       await authorizeOfFail(canUpdateReview, request.session, review)
 

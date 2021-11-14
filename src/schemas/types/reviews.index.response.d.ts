@@ -5,8 +5,10 @@
  * and run json-schema-to-typescript to regenerate this file.
  */
 
-export interface ReviewsUpdateResponse {
+export type ReviewsIndexResponse = {
   id: number;
   comment: string | null;
   comparison: ("worse" | "similar" | "better") | null;
-}
+  reviewedSubmissionId: number;
+  reviewerSubmissionId: number;
+}[];
