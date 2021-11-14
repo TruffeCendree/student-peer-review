@@ -3,9 +3,7 @@ module.exports = {
   env: { node: true },
   parser: '@typescript-eslint/parser',
   plugins: [ '@typescript-eslint' ],
-  parserOptions: {
-    project: './tsconfig.json'
-  },
+  ignorePatterns: '.eslintrc.js',
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',

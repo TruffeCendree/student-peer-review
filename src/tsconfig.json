@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    "outDir": "dist/server",
-    "rootDir": "src",
+    "outDir": "../dist/server",
+    "rootDir": "./",
     "target": "es2018",
     "moduleResolution": "node",
     "module": "commonjs",
@@ -11,5 +11,5 @@
     "resolveJsonModule": true,
     "skipLibCheck": true
   },
-  "include": ["src/**/*"]
+  "include": ["./**/*"]
 }
