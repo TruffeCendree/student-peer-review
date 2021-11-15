@@ -1,5 +1,5 @@
 import { SwaggerOptions } from 'fastify-swagger'
-import { PORT } from './dotenv'
+import { BASE_URL } from './dotenv'
 
 export const swaggerConfig: SwaggerOptions = {
   mode: 'dynamic',
@@ -11,7 +11,7 @@ export const swaggerConfig: SwaggerOptions = {
       description: process.env.npm_package_description as string,
       version: process.env.npm_package_version as string
     },
-    host: `localhost:${PORT}`,
+    host: BASE_URL,
     schemes: ['http'],
     consumes: ['application/json'],
     produces: ['application/json']

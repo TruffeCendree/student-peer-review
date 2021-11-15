@@ -7,7 +7,8 @@ export const NODE_ENV = (process.env.NODE_ENV || 'development') as 'test' | 'dev
 if (NODE_ENV === 'test') config({ path: path.resolve(process.cwd(), '.env.test') })
 config()
 
-export const PORT = parseInt(process.env.PORT || '8080', 10)
+export const FASTIFY_PORT = parseInt(process.env.FASTIFY_PORT || '8080', 10)
+export const FASTIFY_ADDR = getOrThrow('FASTIFY_ADDR')
 export const FASTIFY_LOGGING = process.env.FASTIFY_LOGGING === 'true'
 export const BASE_URL = getOrThrow('BASE_URL')
 
