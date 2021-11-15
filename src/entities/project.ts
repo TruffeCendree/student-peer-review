@@ -58,7 +58,10 @@ export class Project {
    * The grade is computed based on the consistency of the bi-directional review.
    */
   async assignSubmissions(expectedReviewsCount: number) {
-    const submissionMissingReviews = await this.getSubmissionsWithMissingReviewsAs('reviewed', expectedReviewsCount).getMany()
+    const submissionMissingReviews = await this.getSubmissionsWithMissingReviewsAs(
+      'reviewed',
+      expectedReviewsCount
+    ).getMany()
 
     for (const submission of submissionMissingReviews) {
       const missingReviews = expectedReviewsCount - (await submission.receivedReviews).length

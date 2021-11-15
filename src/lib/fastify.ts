@@ -16,6 +16,7 @@ import * as multipartFieldNumberSchema from '../schemas/json/multipart.field.num
 import * as multipartFileSchema from '../schemas/json/multipart.file.json'
 import * as path from 'path'
 import { reviewsRoutes } from '../routes/reviews'
+import { EntityNotFoundError } from 'typeorm'
 
 export const server = fastify({ logger: FASTIFY_LOGGING })
   .addSchema(multipartFieldNumberSchema)
@@ -31,7 +32,12 @@ export const server = fastify({ logger: FASTIFY_LOGGING })
   .register(submissionsRoutes, { prefix: '/submissions' })
   .register(reviewsRoutes, { prefix: '/reviews' })
   .register(fastifyStatic, { root: path.join(__dirname, '../../react/'), list: false })
-  .register(fastifyStatic, { root: path.join(__dirname, '../../../public/'), list: false, prefix: '/public', decorateReply: false })
+  .register(fastifyStatic, {
+    root: path.join(__dirname, '../../../public/'),
+    list: false,
+    prefix: '/public',
+    decorateReply: false
+  })
   .setErrorHandler((error, request, reply) => {
     // based on https://github.com/fastify/fastify/blob/1e94070992d911a81a26597c25f2d35ae65f3d91/fastify.js#L74
     if (error instanceof UnauthorizedError) {
