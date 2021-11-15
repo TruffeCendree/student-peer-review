@@ -9,10 +9,15 @@
     "lint": "eslint --fix src",
     "prettier": "prettier -w src react",
     "semantic-release": "semantic-release",
+    "start": "node --async-stack-traces dist/server/index.js", 
     "start-dev": "node dist/server/index.js | npx pino-pretty",
     "test": "NODE_ENV=test mocha --recursive dist/server/specs --exit --async-stack-traces",
     "coverage": "nyc --reporter=html npm run test; sensible-browser coverage/index.html",
-    "watch": "tsc --project src/tsconfig.json --watch"
+    "build": "npm run build-server && npm run build-client",
+    "build-client": "webpack",
+    "build-server": "tsc --project src/tsconfig.json",
+    "watch-client": "webpack --watch",
+    "watch-server": "tsc --project src/tsconfig.json --watch"
   },
   "repository": {
     "type": "git",
