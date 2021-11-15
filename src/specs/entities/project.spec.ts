@@ -9,13 +9,13 @@ describe('Project', function () {
     it('should not assign to itself', async function () {
       const project = await createProjectFixture({ userCount: 1, withSubmission: true })
       const reviewsCount = await getRepository(Review).count()
-      await project.assignSubmissions()
+      await project.assignSubmissions(2)
       expect(await getRepository(Review).count()).to.eq(reviewsCount)
     })
 
     it('should assign 2 reviews to each submission', async function () {
       let project = await createProjectFixture({ userCount: 4, withSubmission: true })
-      await project.assignSubmissions()
+      await project.assignSubmissions(2)
       project = await getRepository(Project).findOneOrFail(project.id) // reload
 
       expect((await project.submissions).length).to.eq(4)
@@ -38,7 +38,7 @@ describe('Project', function () {
       review2.reviewedSubmission = Promise.resolve((await project.submissions)[1])
       getRepository(Review).create(review2)
 
-      await project.assignSubmissions()
+      await project.assignSubmissions(2)
       project = await getRepository(Project).findOneOrFail(project.id) // reload
 
       expect((await project.submissions).length).to.eq(4)

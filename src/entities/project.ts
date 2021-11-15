@@ -39,7 +39,7 @@ export class Project {
       .getOne()
   }
 
-  private getSubmissionsWithMissingReviewsAs(role: 'reviewer' | 'reviewed') {
+  private getSubmissionsWithMissingReviewsAs(role: 'reviewer' | 'reviewed', expectedReviewsCount: number) {
     const foreignKey = role === 'reviewed' ? 'reviewedSubmissionId' : 'reviewerSubmissionId'
 
     // COUNT(Review.id) counts 0 IF Review.id IS NULL, as opposite to COUNT(*)
@@ -47,7 +47,8 @@ export class Project {
       .leftJoin(Review, 'Review', `Review.${foreignKey} = Submission.id`)
       .where({ project: this })
       .groupBy('Submission.id')
-      .having('COUNT(Review.id) < 2')
+      .having('COUNT(Review.id) < :expectedReviewsCount')
+      .setParameter('expectedReviewsCount', expectedReviewsCount)
       .orderBy('COUNT(Review.id), RAND()')
   }
 
@@ -56,14 +57,14 @@ export class Project {
    * If submissionA reviews submissionB, then submissonB also reviews submissionA.
    * The grade is computed based on the consistency of the bi-directional review.
    */
-  async assignSubmissions() {
-    const submissionMissingReviews = await this.getSubmissionsWithMissingReviewsAs('reviewed').getMany()
+  async assignSubmissions(expectedReviewsCount: number) {
+    const submissionMissingReviews = await this.getSubmissionsWithMissingReviewsAs('reviewed', expectedReviewsCount).getMany()
 
     for (const submission of submissionMissingReviews) {
-      const missingReviews = 2 - (await submission.receivedReviews).length
+      const missingReviews = expectedReviewsCount - (await submission.receivedReviews).length
       if (missingReviews <= 0) return // may have changed with newly created reviews
 
-      const newReviewers = await this.getSubmissionsWithMissingReviewsAs('reviewer')
+      const newReviewers = await this.getSubmissionsWithMissingReviewsAs('reviewer', expectedReviewsCount)
         .where({ id: Not(submission.id) }) // do not review itself
         .limit(missingReviews)
         .getMany()
