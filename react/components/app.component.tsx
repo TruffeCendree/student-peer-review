@@ -6,6 +6,7 @@ import { usersQuery } from 'queries/users.query'
 import { loadCurrentUser } from 'services/users.service'
 import { voidFuncPromise } from 'services/utils.service'
 import { ErrorsTrailComponent } from './errors-trail.component'
+import { SessionInvitationFormComponent } from './session-invitation-form.component'
 
 export function AppComponent() {
   const isCurrentUserLoading = useObservable(usersQuery.currentUserLoading$)
@@ -14,9 +15,9 @@ export function AppComponent() {
   if (isCurrentUserLoading) return null
 
   return (
-    <Container maxWidth="md" style={{ marginTop: '3em' }}>
+    <Container maxWidth={currentUser ? 'md' : 'sm'} style={{ marginTop: '3em' }}>
       <ErrorsTrailComponent />
-      {currentUser ? <ProjectsIndexComponent /> : 'Please login'}
+      {currentUser ? <ProjectsIndexComponent /> : <SessionInvitationFormComponent />}
     </Container>
   )
 }
