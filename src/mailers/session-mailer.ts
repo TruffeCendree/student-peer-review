@@ -1,11 +1,12 @@
 import { User } from '../entities/user'
-import { BASE_URL } from '../lib/dotenv'
+import { BASE_URL, SMTP_FROM } from '../lib/dotenv'
 import { mailTransporter } from '../lib/nodemailer'
 
 export async function sendInvitation(user: User) {
   if (!user.loginToken) throw new Error(`User(${user.id}) has no loginToken`)
 
   await mailTransporter.sendMail({
+    from: SMTP_FROM,
     to: user.email,
     subject: 'Authentication link for the peer review app',
     disableFileAccess: true,

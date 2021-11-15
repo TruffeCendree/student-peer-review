@@ -31,6 +31,7 @@ export const SMTP_PORT = parseInt(getOrThrow('SMTP_PORT'), 10)
 export const SMTP_SECURE = process.env.SMTP_SECURE === 'true'
 export const SMTP_USER = getOrThrow('SMTP_USER')
 export const SMTP_PASS = getOrThrow('SMTP_PASS')
+export const SMTP_FROM = getOrThrow('SMTP_FROM')
 
 export const MULTIPART_MAX_SIZE = parseInt(getOrThrow('MULTIPART_MAX_SIZE'), 10)
 export const MULTIPART_MAX_FILES = parseInt(getOrThrow('MULTIPART_MAX_FILES'), 10)
