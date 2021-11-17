@@ -33,7 +33,7 @@ export class Project {
     return getRepository(Submission)
       .createQueryBuilder()
       .innerJoin('Submission.users', 'Users')
-      .where({ project: this })
+      .andWhere({ project: this })
       .andWhere('Users.id = :userId')
       .setParameter('userId', user.id)
       .getOne()
@@ -45,7 +45,7 @@ export class Project {
     // COUNT(Review.id) counts 0 IF Review.id IS NULL, as opposite to COUNT(*)
     return createQueryBuilder(Submission, Submission.name)
       .leftJoin(Review, 'Review', `Review.${foreignKey} = Submission.id`)
-      .where({ project: this })
+      .andWhere({ project: this })
       .groupBy('Submission.id')
       .having('COUNT(Review.id) < :expectedReviewsCount')
       .setParameter('expectedReviewsCount', expectedReviewsCount)
@@ -68,7 +68,7 @@ export class Project {
       if (missingReviews <= 0) return // may have changed with newly created reviews
 
       const newReviewers = await this.getSubmissionsWithMissingReviewsAs('reviewer', expectedReviewsCount)
-        .where({ id: Not(submission.id) }) // do not review itself
+        .andWhere({ id: Not(submission.id) }) // do not review itself
         .limit(missingReviews)
         .getMany()
 
