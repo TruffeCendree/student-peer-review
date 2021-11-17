@@ -25,7 +25,7 @@ export function SubmissionShowReviewed({
   submission: SubmissionsSerialized
   project: ProjectsIndexResponse[0]
 }) {
-  const [receiverReview] = useObservable(reviewsQuery.selectWhereReviewerSubmission(submission.id), [])
+  const [receiverReview] = useObservable(reviewsQuery.selectWhereReviewedSubmission(submission.id), [])
   const [comparison, setComparison] = React.useState<ReviewsSerialized['comparison']>(null)
   const [comment, setComment] = React.useState('')
 
