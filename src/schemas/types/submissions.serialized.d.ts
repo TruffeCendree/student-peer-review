@@ -7,6 +7,7 @@
 
 export interface SubmissionsSerialized {
   id: number;
+  projectId: number;
   fileUrl: string;
   userIds: number[];
 }

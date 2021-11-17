@@ -11,7 +11,6 @@ import { reviewsQuery } from 'queries/reviews.query'
 import { updateReview } from 'services/reviews.service'
 import { useDisabledAsync } from 'hooks/use-disabled-async.hook'
 import { ReviewsSerialized } from '@api/reviews.serialized'
-import { submissionsQuery } from 'queries/submissions.query'
 
 const comparisonChoices = [
   { value: 'worse' as const, label: 'Their deliverable is less good than mine.' },

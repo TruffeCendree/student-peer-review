@@ -15,8 +15,8 @@ import { SubmissionShowReviewed } from './submission-show-reviewed.component'
 import { Alert } from '@mui/material'
 
 export function ProjectShowComponent({ project }: { project: ProjectsIndexResponse[0] }) {
-  const ownedSubmission = useObservable(submissionsQuery.ownedSubmission$, null)
-  const reviewedSubmissions = useObservable(submissionsQuery.reviewedSubmissions$, [])
+  const ownedSubmission = useObservable(submissionsQuery.selectOwnedSubmissionOfProject(project.id), null)
+  const reviewedSubmissions = useObservable(submissionsQuery.selectReviewedSubmissionsOfProject(project.id), [])
 
   return (
     <Accordion>

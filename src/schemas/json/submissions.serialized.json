@@ -4,6 +4,7 @@
   "type": "object",
   "properties": {
     "id": { "type": "number" },
+    "projectId": { "type": "number" },
     "fileUrl": { "type": "string" },
     "userIds": {
       "type": "array",
@@ -11,5 +12,5 @@
     }
   },
   "additionalProperties": false,
-  "required": ["id", "fileUrl", "userIds"]
+  "required": ["id", "fileUrl", "projectId", "userIds"]
 }

@@ -7,6 +7,7 @@
 
 export type SubmissionsIndexResponse = {
   id: number;
+  projectId: number;
   fileUrl: string;
   userIds: number[];
 }[];

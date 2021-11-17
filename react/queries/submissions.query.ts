@@ -8,13 +8,25 @@ export class SubmissionsQuery extends QueryEntity<SubmissionsState> {
     filter(([submissions, currentUser]) => !!submissions && !!currentUser)
   )
 
-  ownedSubmission$ = this.submissionsJoinsCurrentUser$.pipe(
-    map(([submissions, currentUser]) => submissions.find(submission => submission.userIds.includes(currentUser.id)))
-  )
+  selectOwnedSubmissionOfProject(projectId: number) {
+    return this.submissionsJoinsCurrentUser$.pipe(
+      map(([submissions, currentUser]) =>
+        submissions.find(
+          submission => submission.projectId === projectId && submission.userIds.includes(currentUser.id)
+        )
+      )
+    )
+  }
 
-  reviewedSubmissions$ = this.submissionsJoinsCurrentUser$.pipe(
-    map(([submissions, currentUser]) => submissions.filter(submission => !submission.userIds.includes(currentUser.id)))
-  )
+  selectReviewedSubmissionsOfProject(projectId: number) {
+    return this.submissionsJoinsCurrentUser$.pipe(
+      map(([submissions, currentUser]) =>
+        submissions.filter(
+          submission => submission.projectId === projectId && !submission.userIds.includes(currentUser.id)
+        )
+      )
+    )
+  }
 }
 
 export const submissionsQuery = new SubmissionsQuery(submissionsStore)

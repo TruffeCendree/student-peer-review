@@ -5,7 +5,6 @@ import {
   Column,
   createQueryBuilder,
   Entity,
-  getRepository,
   JoinTable,
   ManyToMany,
   ManyToOne,
