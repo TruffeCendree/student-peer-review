@@ -41,7 +41,7 @@ export function ProjectShowComponent({ project }: { project: ProjectsIndexRespon
         <Typography style={{ fontWeight: 'bold' }}>Review your peer's deliveries</Typography>
         {reviewedSubmissions.map(submission => (
           <Paper key={submission.id} style={{ padding: '1em', marginTop: '0.5em', background: '#f9f9f9' }}>
-            <SubmissionShowReviewed submission={ownedSubmission} project={project} />
+            <SubmissionShowReviewed submission={submission} project={project} />
           </Paper>
         ))}
 

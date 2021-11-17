@@ -20,11 +20,11 @@ export class SubmissionsQuery extends QueryEntity<SubmissionsState> {
 
   selectReviewedSubmissionsOfProject(projectId: number) {
     return this.submissionsJoinsCurrentUser$.pipe(
-      map(([submissions, currentUser]) =>
-        submissions.filter(
+      map(([submissions, currentUser]) => {
+        return submissions.filter(
           submission => submission.projectId === projectId && !submission.userIds.includes(currentUser.id)
         )
-      )
+      })
     )
   }
 }
