@@ -3,6 +3,7 @@ import {
   createQueryBuilder,
   Entity,
   getRepository,
+  In,
   ManyToMany,
   Not,
   OneToMany,
@@ -67,8 +68,12 @@ export class Project {
       const missingReviews = expectedReviewsCount - (await submission.receivedReviews).length
       if (missingReviews <= 0) return // may have changed with newly created reviews
 
+      // it should ignore the submissions that are already assigned as reviewer
+      const alreadyPeeredWithSubmissionIds = (await submission.receivedReviews).map(_ => _.reviewerSubmissionId)
+
       const newReviewers = await this.getSubmissionsWithMissingReviewsAs('reviewer', expectedReviewsCount)
         .andWhere({ id: Not(submission.id) }) // do not review itself
+        .andWhere({ id: Not(In(alreadyPeeredWithSubmissionIds)) })
         .limit(missingReviews)
         .getMany()
 

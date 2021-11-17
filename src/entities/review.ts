@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn, RelationId } from 'typeorm'
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn, RelationId, Unique } from 'typeorm'
 import { Submission } from './submission'
 
 enum Comparison {
@@ -8,6 +8,7 @@ enum Comparison {
 }
 
 @Entity()
+@Unique('reviewedSubmissionId_reviewerSubmissionId', ['reviewedSubmission', 'reviewerSubmission'])
 export class Review {
   @PrimaryGeneratedColumn()
   id!: number

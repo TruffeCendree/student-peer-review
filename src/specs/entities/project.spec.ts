@@ -1,7 +1,9 @@
 import { expect } from 'chai'
+import { connect } from 'http2'
 import { getRepository } from 'typeorm'
 import { Project } from '../../entities/project'
 import { Review } from '../../entities/review'
+import { Submission } from '../../entities/submission'
 import { createProjectFixture } from '../fixtures/projects-fixtures'
 
 describe('Project', function () {
@@ -46,6 +48,38 @@ describe('Project', function () {
         expect((await submission.receivedReviews).length).to.eq(2)
         expect((await submission.authoredReviews).length).to.eq(2)
       }
+    })
+
+    it('should not duplicated peering', async function () {
+      const project = await createProjectFixture({ userCount: 2, withSubmission: true })
+      expect(await getRepository(Submission).count()).to.eq(2)
+
+      // impossible to fullfil, only one peering is possible with 2 submissions
+      await project.assignSubmissions(2)
+
+      // 1 peering * 2 reviews per peering
+      expect(await getRepository(Review).count()).to.eq(2)
+    })
+
+    it('should not mix project during assignation', async function () {
+      let project1 = await createProjectFixture({ userCount: 2, withSubmission: true })
+      let project2 = await createProjectFixture({ userCount: 2, withSubmission: true })
+
+      await project1.assignSubmissions(2)
+      await project2.assignSubmissions(2)
+
+      project1 = await getRepository(Project).findOneOrFail(project1.id) // reload
+      project2 = await getRepository(Project).findOneOrFail(project2.id) // reload
+
+      expect(await getRepository(Submission).count()).to.eq(4)
+      expect(await getRepository(Review).count()).to.eq(4)
+
+      expect(
+        await getRepository(Review).count({
+          relations: ['reviewedSubmission', 'reviewerSubmission'],
+          where: 'Review__reviewerSubmission.projectId != Review__reviewedSubmission.projectId'
+        })
+      ).to.eq(0)
     })
   })
 })
