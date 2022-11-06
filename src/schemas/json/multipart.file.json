@@ -1,5 +1,5 @@
 {
-  "$id": "src/schemas/json/multipart.file.json",
+  "$id": "multipart.file.json",
   "type": "object",
   "properties": {
     "encoding": { "type": "string" },

@@ -6,20 +6,16 @@
  */
 
 export interface SubmissionsCreateBody {
-  projectId: {
-    value: number;
-  };
-  "userIds[]"?:
-    | {
-        value: number;
-      }[]
-    | {
-        value: number;
-      };
-  file: {
-    encoding: string;
-    filename: string;
-    mimetype: string;
-    [k: string]: unknown;
-  };
+  projectId: MultipartFieldNumberJson;
+  "userIds[]"?: MultipartFieldNumberJson[] | MultipartFieldNumberJson;
+  file: MultipartFileJson;
+}
+export interface MultipartFieldNumberJson {
+  value: number;
+}
+export interface MultipartFileJson {
+  encoding: string;
+  filename: string;
+  mimetype: string;
+  [k: string]: unknown;
 }

@@ -1,5 +1,5 @@
 import { EntityState, EntityStore, StoreConfig } from '@datorama/akita'
-import { SubmissionsSerialized } from '@api/submissions.serialized'
+import { SubmissionsSerializedJson as SubmissionsSerialized } from '@api/submissions.serialized'
 
 export interface SubmissionsState extends EntityState<SubmissionsSerialized, number> {}
 

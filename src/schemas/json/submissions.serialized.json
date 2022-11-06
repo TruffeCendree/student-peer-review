@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/schema",
-  "$id": "src/schemas/json/submissions.serialized.json",
+  "$id": "submissions.serialized.json",
   "type": "object",
   "properties": {
     "id": { "type": "number" },

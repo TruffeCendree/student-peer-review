@@ -5,7 +5,7 @@
  * and run json-schema-to-typescript to regenerate this file.
  */
 
-export interface MultipartFile {
+export interface MultipartFileJson {
   encoding: string;
   filename: string;
   mimetype: string;

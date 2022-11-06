@@ -5,7 +5,7 @@
  * and run json-schema-to-typescript to regenerate this file.
  */
 
-export interface ReviewsSerialized {
+export interface ReviewsSerializedJson {
   id: number;
   comment: string | null;
   comparison: ("strongly_worse" | "slightly_worse" | "similar" | "slightly_better" | "strongly_better") | null;

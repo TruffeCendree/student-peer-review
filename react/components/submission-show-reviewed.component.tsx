@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { SubmissionsSerialized } from '@api/submissions.serialized'
+import { SubmissionsSerializedJson as SubmissionsSerialized } from '@api/submissions.serialized'
 import Grid from '@mui/material/Grid'
 import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
@@ -10,7 +10,7 @@ import { useObservable } from 'hooks/use-obserable.hook'
 import { reviewsQuery } from 'queries/reviews.query'
 import { updateReview } from 'services/reviews.service'
 import { useDisabledAsync } from 'hooks/use-disabled-async.hook'
-import { ReviewsSerialized } from '@api/reviews.serialized'
+import { ReviewsSerializedJson as ReviewsSerialized } from '@api/reviews.serialized'
 
 const comparisonChoices = [
   { value: 'strongly_worse' as const, label: 'Their deliverable is strongly worse than mine.' },

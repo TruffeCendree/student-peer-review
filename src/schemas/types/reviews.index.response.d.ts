@@ -5,10 +5,12 @@
  * and run json-schema-to-typescript to regenerate this file.
  */
 
-export type ReviewsIndexResponse = {
+export type ReviewsIndexResponse = ReviewsSerializedJson[];
+
+export interface ReviewsSerializedJson {
   id: number;
   comment: string | null;
   comparison: ("strongly_worse" | "slightly_worse" | "similar" | "slightly_better" | "strongly_better") | null;
   reviewedSubmissionId: number;
   reviewerSubmissionId: number;
-}[];
+}

@@ -1,5 +1,5 @@
 import { httpGet, httpPostMultipart } from './http.service'
-import { SubmissionsSerialized } from '@api/submissions.serialized'
+import { SubmissionsSerializedJson as SubmissionsSerialized } from '@api/submissions.serialized'
 import { SubmissionsIndexResponse } from '@api/submissions.index.response'
 import { submissionsStore } from 'stores/submissions.store'
 

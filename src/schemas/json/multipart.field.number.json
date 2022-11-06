@@ -1,5 +1,5 @@
 {
-  "$id": "src/schemas/json/multipart.field.number.json",
+  "$id": "multipart.field.number.json",
   "type": "object",
   "properties": {
     "value": { "type": "number" }

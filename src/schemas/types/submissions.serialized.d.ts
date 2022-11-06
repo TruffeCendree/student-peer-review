@@ -5,7 +5,7 @@
  * and run json-schema-to-typescript to regenerate this file.
  */
 
-export interface SubmissionsSerialized {
+export interface SubmissionsSerializedJson {
   id: number;
   projectId: number;
   fileUrl: string;

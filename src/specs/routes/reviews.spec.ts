@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import { server } from '../../lib/fastify'
 import { ReviewsUpdateBody } from '../../schemas/types/reviews.update.body'
-import { ReviewsSerialized } from '../../schemas/types/reviews.serialized'
+import { ReviewsSerializedJson as ReviewsSerialized } from '../../schemas/types/reviews.serialized'
 import { createReviewFixture } from '../fixtures/reviews-fixtures'
 import { createSessionFixture } from '../fixtures/sessions-fixtures'
 import { loginAs } from '../spec-helper'

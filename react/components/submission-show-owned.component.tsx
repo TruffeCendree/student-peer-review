@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { SubmissionsSerialized } from '@api/submissions.serialized'
+import { SubmissionsSerializedJson as SubmissionsSerialized } from '@api/submissions.serialized'
 import Typography from '@mui/material/Typography'
 import Paper from '@mui/material/Paper'
 import TextField from '@mui/material/TextField'
@@ -7,7 +7,7 @@ import Alert, { AlertColor } from '@mui/material/Alert'
 import { ProjectsIndexResponse } from '@api/projects.index.response'
 import { reviewsQuery } from 'queries/reviews.query'
 import { useObservable } from 'hooks/use-obserable.hook'
-import { ReviewsSerialized } from '@api/reviews.serialized'
+import { ReviewsSerializedJson as ReviewsSerialized } from '@api/reviews.serialized'
 import { submissionsQuery } from 'queries/submissions.query'
 
 const comparisonToI18n: { [comparison in ReviewsSerialized['comparison']]: string } = {

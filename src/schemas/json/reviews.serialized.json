@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/schema",
-  "$id": "src/schemas/json/reviews.serialized.json",
+  "$id": "reviews.serialized.json",
   "type": "object",
   "properties": {
     "id": {

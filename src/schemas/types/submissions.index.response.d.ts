@@ -5,9 +5,11 @@
  * and run json-schema-to-typescript to regenerate this file.
  */
 
-export type SubmissionsIndexResponse = {
+export type SubmissionsIndexResponse = SubmissionsSerializedJson[];
+
+export interface SubmissionsSerializedJson {
   id: number;
   projectId: number;
   fileUrl: string;
   userIds: number[];
-}[];
+}

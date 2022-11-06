@@ -2,6 +2,6 @@
   "$schema": "http://json-schema.org/schema",
   "type": "array",
   "items": {
-    "$ref": "src/schemas/json/submissions.serialized.json"
+    "$ref": "submissions.serialized.json"
   }
 }

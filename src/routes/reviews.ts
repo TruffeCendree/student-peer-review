@@ -5,7 +5,7 @@ import * as reviewsUpdateBodySchema from '../schemas/json/reviews.update.body.js
 import * as reviewsIndexResponseSchema from '../schemas/json/reviews.index.response.json'
 import * as reviewsSerializedSchema from '../schemas/json/reviews.serialized.json'
 import { ReviewsUpdateBody } from '../schemas/types/reviews.update.body'
-import { ReviewsSerialized } from '../schemas/types/reviews.serialized'
+import { ReviewsSerializedJson as ReviewsSerialized } from '../schemas/types/reviews.serialized'
 import { authorizeOfFail } from '../policies/policy'
 import { canIndexReview, canUpdateReview, reviewsPolicyScope } from '../policies/reviews-policy'
 import { Review } from '../entities/review'

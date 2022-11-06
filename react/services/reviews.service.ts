@@ -1,6 +1,6 @@
 import { httpGet, httpPatch } from './http.service'
 import { ReviewsIndexResponse } from '@api/reviews.index.response'
-import { ReviewsSerialized } from '@api/reviews.serialized'
+import { ReviewsSerializedJson as ReviewsSerialized } from '@api/reviews.serialized'
 import { ReviewsUpdateBody } from '@api/reviews.update.body'
 import { reviewsStore } from 'stores/reviews.store'
 

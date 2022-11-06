@@ -10,7 +10,7 @@ import * as submissionsCreateBodySchema from '../schemas/json/submissions.create
 import { Project } from '../entities/project'
 import { MultipartFile } from '@fastify/multipart'
 import { canIndexProject } from '../policies/projects-policy'
-import { SubmissionsSerialized } from '../schemas/types/submissions.serialized'
+import { SubmissionsSerializedJson as SubmissionsSerialized } from '../schemas/types/submissions.serialized'
 import { SubmissionsIndexResponse } from '../schemas/types/submissions.index.response'
 import { dataSource } from '../lib/typeorm'
 
