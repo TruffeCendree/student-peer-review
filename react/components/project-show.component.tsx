@@ -13,6 +13,7 @@ import { submissionsQuery } from 'queries/submissions.query'
 import { SubmissionShowOwned } from './submission-show-owned.component'
 import { SubmissionShowReviewed } from './submission-show-reviewed.component'
 import { Alert } from '@mui/material'
+import * as MarkdownIt from 'markdown-it'
 
 export function ProjectShowComponent({ project }: { project: ProjectsIndexResponse[0] }) {
   const ownedSubmission = useObservable(submissionsQuery.selectOwnedSubmissionOfProject(project.id), null)
@@ -29,7 +30,7 @@ export function ProjectShowComponent({ project }: { project: ProjectsIndexRespon
         {project.instructions && (
           <React.Fragment>
             <Typography style={{ fontWeight: 'bold' }}>Activity introduction</Typography>
-            <Typography style={{ whiteSpace: 'pre-wrap' }}>{project.instructions}</Typography>
+            <Typography dangerouslySetInnerHTML={{ __html: new MarkdownIt().render(project.instructions) }} />
           </React.Fragment>
         )}
 
