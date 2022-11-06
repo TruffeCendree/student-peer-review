@@ -35,7 +35,7 @@ export async function reviewsRoutes(fastify: FastifyInstance) {
       response: { 200: reviewsSerializedSchema }
     },
     handler: async function update(request): Promise<ReviewsSerialized> {
-      const review = await getRepository(Review).findOneOrFail(request.params.id)
+      const review = await getRepository(Review).findOneByOrFail({ id: request.params.id })
       await authorizeOfFail(canUpdateReview, request.session, review)
 
       review.comment = request.body.comment

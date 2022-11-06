@@ -1,5 +1,4 @@
 import { expect } from 'chai'
-import { connect } from 'http2'
 import { getRepository } from 'typeorm'
 import { Project } from '../../entities/project'
 import { Review } from '../../entities/review'
@@ -18,7 +17,7 @@ describe('Project', function () {
     it('should assign 2 reviews to each submission', async function () {
       let project = await createProjectFixture({ userCount: 4, withSubmission: true })
       await project.assignSubmissions(2)
-      project = await getRepository(Project).findOneOrFail(project.id) // reload
+      project = await getRepository(Project).findOneByOrFail({ id: project.id }) // reload
 
       expect((await project.submissions).length).to.eq(4)
       for (const submission of await project.submissions) {
@@ -41,7 +40,7 @@ describe('Project', function () {
       getRepository(Review).create(review2)
 
       await project.assignSubmissions(2)
-      project = await getRepository(Project).findOneOrFail(project.id) // reload
+      project = await getRepository(Project).findOneByOrFail({ id: project.id }) // reload
 
       expect((await project.submissions).length).to.eq(4)
       for (const submission of await project.submissions) {
@@ -68,18 +67,20 @@ describe('Project', function () {
       await project1.assignSubmissions(2)
       await project2.assignSubmissions(2)
 
-      project1 = await getRepository(Project).findOneOrFail(project1.id) // reload
-      project2 = await getRepository(Project).findOneOrFail(project2.id) // reload
+      project1 = await getRepository(Project).findOneByOrFail({ id: project1.id }) // reload
+      project2 = await getRepository(Project).findOneByOrFail({ id: project2.id }) // reload
 
       expect(await getRepository(Submission).count()).to.eq(4)
       expect(await getRepository(Review).count()).to.eq(4)
 
-      expect(
-        await getRepository(Review).count({
-          relations: ['reviewedSubmission', 'reviewerSubmission'],
-          where: 'Review__reviewerSubmission.projectId != Review__reviewedSubmission.projectId'
-        })
-      ).to.eq(0)
+      const countSubmissionsLinkedToOtherprojects = await (await getRepository(Review))
+        .createQueryBuilder()
+        .innerJoin('Review.reviewedSubmission', 'ReviewedSubmission')
+        .innerJoin('Review.reviewerSubmission', 'ReviewerSubmission')
+        .where('ReviewedSubmission.projectId != ReviewerSubmission.projectId')
+        .getCount()
+
+      expect(countSubmissionsLinkedToOtherprojects).to.eq(0)
     })
   })
 })

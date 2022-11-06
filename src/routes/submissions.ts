@@ -35,7 +35,7 @@ export async function submissionsRoutes(fastify: FastifyInstance) {
     },
     handler: async function create(request): Promise<SubmissionsSerialized> {
       const submission = new Submission()
-      const project = await getRepository(Project).findOneOrFail(request.body.projectId.value)
+      const project = await getRepository(Project).findOneByOrFail({ id: request.body.projectId.value })
       const users = [request.session?.user as User]
 
       if (request.body['userIds[]']) {

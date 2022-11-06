@@ -16,7 +16,7 @@ describe('/sessions', function () {
       expect((await user.sessions).length).to.eq(1)
 
       // reload the user entity
-      user = await getRepository(User).findOneOrFail(user.id)
+      user = await getRepository(User).findOneByOrFail({ id: user.id })
       expect(user.loginToken).to.be.null
     })
   })

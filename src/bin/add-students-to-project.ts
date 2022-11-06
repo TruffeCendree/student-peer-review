@@ -19,7 +19,7 @@ async function run() {
   const projectRepository = conn.getRepository(Project)
   const userRepository = conn.getRepository(User)
 
-  const project = await projectRepository.findOneOrFail(argv.projectId)
+  const project = await projectRepository.findOneByOrFail({ id: argv.projectId })
   const projectUsers = await project.users
 
   for (let i = 2; i <= xlsx.utils.decode_range(sheet['!ref'] as string).e.r + 1; i++) {

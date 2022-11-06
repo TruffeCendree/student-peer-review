@@ -54,7 +54,7 @@ describe('/submissions', function () {
       expect(response.json()).to.haveOwnProperty('id')
       expect(response.json()).to.haveOwnProperty('fileUrl')
 
-      const submission = await getRepository(Submission).findOneOrFail({ order: { id: 'DESC' } })
+      const submission = await getRepository(Submission).findOneOrFail({ where: {}, order: { id: 'DESC' } })
       const submissionUserIds = (await submission.users).map(_ => _.id)
       expect(submissionUserIds.length).to.eq(3)
       expect(submissionUserIds).to.have.members([session.userId, secondUser.id, thirdUser.id])
@@ -82,7 +82,7 @@ describe('/submissions', function () {
       expect(response.json()).to.haveOwnProperty('id')
       expect(response.json()).to.haveOwnProperty('fileUrl')
 
-      const submission = await getRepository(Submission).findOneOrFail({ order: { id: 'DESC' } })
+      const submission = await getRepository(Submission).findOneOrFail({ where: {}, order: { id: 'DESC' } })
       const submissionUserIds = (await submission.users).map(_ => _.id)
       expect(submissionUserIds.length).to.eq(2)
       expect(submissionUserIds).to.have.members([session.userId, secondUser.id])

@@ -8,7 +8,7 @@ import { COOKIE_HTTP_ONLY, COOKIE_MAX_AGE, COOKIE_NAME, COOKIE_SECURE, COOKIE_SI
 
 declare module 'fastify' {
   interface FastifyRequest {
-    session?: Session
+    session?: Session | null
   }
 }
 
@@ -28,5 +28,5 @@ export async function loadSession(request: FastifyRequest) {
   if (!request.cookies[COOKIE_NAME] || !request.cookies.sessionId) return
 
   const unsigned = request.unsignCookie(request.cookies.sessionId)
-  if (unsigned.value && unsigned.valid) request.session = await getRepository(Session).findOne(unsigned.value)
+  if (unsigned.value && unsigned.valid) request.session = await getRepository(Session).findOneBy({ id: unsigned.value })
 }
