@@ -1,7 +1,7 @@
 import { getRepository } from 'typeorm'
 import { Project } from '../../entities/project'
 import { User } from '../../entities/user'
-import * as faker from 'faker'
+import { faker } from '@faker-js/faker'
 import { buildUserFixture } from './users-fixtures'
 import { buildSubmissionFixture } from './submissions-fixtures'
 
@@ -9,7 +9,7 @@ type ProjectFixtureOptions = ({ users?: User[] } | { userCount?: number }) & { w
 
 export async function buildProjectFixture(opts: ProjectFixtureOptions = {}) {
   const project = new Project()
-  project.name = faker.company.companyName()
+  project.name = faker.company.name()
   project.instructions = faker.lorem.paragraphs(2)
 
   if ('users' in opts && opts.users) {

@@ -1,7 +1,7 @@
 import { getRepository } from 'typeorm'
 import { Session } from '../../entities/session'
 import { buildUserFixture } from './users-fixtures'
-import * as faker from 'faker'
+import { faker } from '@faker-js/faker'
 import { User } from '../../entities/user'
 
 type SessionFixtureOptions = { user?: User }

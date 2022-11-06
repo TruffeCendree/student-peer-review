@@ -1,5 +1,5 @@
 import { User } from '../../entities/user'
-import * as faker from 'faker'
+import { faker } from '@faker-js/faker'
 import { getRepository } from 'typeorm'
 
 type UserFixtureOptions = Partial<Pick<User, 'loginToken'>>
