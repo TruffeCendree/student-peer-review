@@ -45,7 +45,7 @@ export function SubmissionCreateFormComponent({ project }: { project: ProjectsIn
         </Grid>
 
         <Grid item xs={5}>
-          <Typography variant="caption">You are allowed to upload a single file up to 16MB (ZIP or PDF).</Typography>
+          <Typography variant="caption">You can upload a single file up to 16MB (only: zip/pdf).</Typography>
           <input type="file" onChange={evt => setFile(evt.target.files[0])} accept="application/zip,application/pdf" />
         </Grid>
 
