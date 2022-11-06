@@ -1,7 +1,7 @@
 import { FastifyInstance } from 'fastify'
-import { SessionsCreateQuerystring } from '../schemas/types/sessions.create.querystring'
+import { SessionsCreateBody } from '../schemas/types/sessions.create.body'
 import { SessionsInviteBody } from '../schemas/types/sessions.invite.body'
-import * as sessionsCreateQuerystringSchema from '../schemas/json/sessions.create.querystring.json'
+import * as sessionsCreateBodySchema from '../schemas/json/sessions.create.body.json'
 import * as sessionsInviteBodySchema from '../schemas/json/sessions.invite.body.json'
 import { User } from '../entities/user'
 import { saveSession } from '../lib/session'
@@ -11,15 +11,15 @@ import { sendInvitation } from '../mailers/session-mailer'
 import { dataSource } from '../lib/typeorm'
 
 export async function sessionRoutes(fastify: FastifyInstance) {
-  fastify.get<{ Querystring: SessionsCreateQuerystring }>('/establish', {
+  fastify.post<{ Body: SessionsCreateBody }>('', {
     schema: {
-      querystring: sessionsCreateQuerystringSchema
+      body: sessionsCreateBodySchema
     },
     handler: async function establish(request, reply) {
       // should be handled by the schema validation, but is too critical so we check it again.
-      if (!request.query.token) throw new Error('Never lookup for a null loginToken, it will match the wrong user.')
+      if (!request.body.token) throw new Error('Please provide the token received per email, it is required to sign in.')
 
-      const user = await dataSource.getRepository(User).findOneOrFail({ where: { loginToken: request.query.token } })
+      const user = await dataSource.getRepository(User).findOneOrFail({ where: { loginToken: request.body.token } })
       user.loginToken = null
       await dataSource.getRepository(User).save(user)
 

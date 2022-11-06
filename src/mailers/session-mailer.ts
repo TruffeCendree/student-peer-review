@@ -1,5 +1,5 @@
 import { User } from '../entities/user'
-import { BASE_URL, SMTP_FROM } from '../lib/dotenv'
+import { SMTP_FROM } from '../lib/dotenv'
 import { mailTransporter } from '../lib/nodemailer'
 
 export async function sendInvitation(user: User) {
@@ -14,10 +14,10 @@ export async function sendInvitation(user: User) {
     text: `
 Hello ${user.firstname},
 
-Use the above link to login on the peer review app for the practical activity.
-${BASE_URL}/sessions/establish?token=${user.loginToken}
+Please copy/paste the above code to login on the peer review app for the practical activity.
+${user.loginToken}
 
-This link works only once, but can be renewed multiple times.
+This code works only once, but can be renewed multiple times.
 
 You will upload your practical activities on that platform.
 

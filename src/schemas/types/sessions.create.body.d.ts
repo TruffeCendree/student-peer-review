@@ -5,6 +5,6 @@
  * and run json-schema-to-typescript to regenerate this file.
  */
 
-export interface SessionsCreateQuerystring {
+export interface SessionsCreateBody {
   token: string;
 }

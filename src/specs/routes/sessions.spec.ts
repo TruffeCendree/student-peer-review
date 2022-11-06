@@ -9,7 +9,7 @@ describe('/sessions', function () {
   describe('#create', function () {
     it('should create a session', async function () {
       let user = await createUserFixture({ loginToken: 'some-secret-token' })
-      const response = await server.inject({ method: 'GET', url: `/sessions/establish?token=${user.loginToken!}` })
+      const response = await server.inject({ method: 'POST', url: '/sessions', payload: { token: user.loginToken! } })
       expect(response.statusCode).to.eq(200)
       expect(response.json()).to.haveOwnProperty('success').equals(true)
       expect(response.headers).to.haveOwnProperty('set-cookie')
