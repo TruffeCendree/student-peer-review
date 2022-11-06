@@ -73,7 +73,8 @@ describe('Project', function () {
       expect(await dataSource.getRepository(Submission).count()).to.eq(4)
       expect(await dataSource.getRepository(Review).count()).to.eq(4)
 
-      const countSubmissionsLinkedToOtherprojects = await dataSource.getRepository(Review)
+      const countSubmissionsLinkedToOtherprojects = await dataSource
+        .getRepository(Review)
         .createQueryBuilder()
         .innerJoin('Review.reviewedSubmission', 'ReviewedSubmission')
         .innerJoin('Review.reviewerSubmission', 'ReviewerSubmission')

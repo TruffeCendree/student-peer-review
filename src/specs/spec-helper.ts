@@ -21,9 +21,11 @@ async function cleanupWith(mode: 'truncation' | 'deletion') {
   const entities = dataSource.entityMetadatas
 
   for (const entity of entities) {
-    if (mode === 'truncation')
+    if (mode === 'truncation') {
       await dataSource.query(`SET FOREIGN_KEY_CHECKS = 0; TRUNCATE ${entity.tableName}; SET FOREIGN_KEY_CHECKS = 1;`)
-    else await dataSource.query(`SET FOREIGN_KEY_CHECKS = 0; DELETE FROM ${entity.tableName}; SET FOREIGN_KEY_CHECKS = 1;`)
+    } else {
+      await dataSource.query(`SET FOREIGN_KEY_CHECKS = 0; DELETE FROM ${entity.tableName}; SET FOREIGN_KEY_CHECKS = 1;`)
+    }
   }
 }
 

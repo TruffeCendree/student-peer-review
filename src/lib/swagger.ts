@@ -18,5 +18,5 @@ export const swaggerConfig: SwaggerOptions = {
 }
 
 export const swaggerUiConfig: FastifySwaggerUiOptions = {
-  routePrefix: '/documentation',
+  routePrefix: '/documentation'
 }

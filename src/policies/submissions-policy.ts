@@ -25,14 +25,16 @@ export const canCreateSubmission: PolicyAction<Submission> = async function canC
 }
 
 async function isUserRegistredToProject(user: User, project: Project) {
-  return !!(await dataSource.createQueryBuilder('user_projects_project', 'user_projects_project')
+  return !!(await dataSource
+    .createQueryBuilder('user_projects_project', 'user_projects_project')
     .where({ userId: user.id, projectId: project.id })
     .getRawOne())
 }
 
 export function submissionPolicyScope(session: Session) {
   // An user can see both its own submissions and the submissions it should review
-  return dataSource.createQueryBuilder(Submission, Submission.name)
+  return dataSource
+    .createQueryBuilder(Submission, Submission.name)
     .leftJoin(Review, 'Review', 'Review.reviewedSubmissionId = Submission.id')
     .leftJoin(Submission, 'ReviewerSubmission', 'ReviewerSubmission.id = Review.reviewerSubmissionId')
     .leftJoin('submission_users_user', 'SubmissionUser', 'SubmissionUser.submissionId = Submission.id')

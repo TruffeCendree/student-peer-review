@@ -2,9 +2,7 @@
   "$schema": "http://json-schema.org/schema",
   "type": "object",
   "properties": {
-    "token": {
-      "type": "string"
-    }
+    "token": { "type": "string" }
   },
   "additionalProperties": false,
   "required": ["token"]

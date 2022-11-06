@@ -1,7 +1,16 @@
 import { MultipartFile } from '@fastify/multipart'
 import { v4 as uuidv4 } from 'uuid'
 import { mkdir, writeFile } from 'fs/promises'
-import { Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn, RelationId } from 'typeorm'
+import {
+  Column,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  RelationId
+} from 'typeorm'
 import { Project } from './project'
 import { User } from './user'
 import { Review } from './review'
@@ -34,8 +43,8 @@ export class Submission {
   get fileUrl() {
     return `/public/submissions/${this.fileToken}`
   }
-  
-  async getUsers$ () {
+
+  async getUsers$() {
     const { dataSource } = await import('../lib/typeorm')
 
     return dataSource

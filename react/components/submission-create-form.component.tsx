@@ -38,7 +38,7 @@ export function SubmissionCreateFormComponent({ project }: { project: ProjectsIn
             id="contributors"
             value={secondContributor}
             options={project.users.filter(_ => _.id !== currentUser.id)}
-            getOptionLabel={user => typeof user !== 'string' && (user.lastname + ' ' + user.firstname)}
+            getOptionLabel={user => typeof user !== 'string' && user.lastname + ' ' + user.firstname}
             onChange={(ev, user) => setSecondContributor(user as User)}
             renderInput={params => <TextField {...params} label="Second contributor" />}
           />

@@ -28,5 +28,6 @@ export async function loadSession(request: FastifyRequest) {
   if (!request.cookies[COOKIE_NAME] || !request.cookies.sessionId) return
 
   const unsigned = request.unsignCookie(request.cookies.sessionId)
-  if (unsigned.value && unsigned.valid) request.session = await dataSource.getRepository(Session).findOneBy({ id: unsigned.value })
+  const repo = dataSource.getRepository(Session)
+  if (unsigned.value && unsigned.valid) request.session = await repo.findOneBy({ id: unsigned.value })
 }

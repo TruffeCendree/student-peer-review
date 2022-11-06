@@ -15,9 +15,10 @@ export async function userRoutes(fastify: FastifyInstance) {
       response: { 200: usersShowResponseSchema }
     },
     handler: async function show(request): Promise<UsersShowResponse> {
-      const user = request.params.id === 'me'
-        ? request.session?.user as User :
-        await dataSource.getRepository(User).findOneByOrFail({ id: request.params.id })
+      const user =
+        request.params.id === 'me'
+          ? (request.session?.user as User)
+          : await dataSource.getRepository(User).findOneByOrFail({ id: request.params.id })
 
       await authorizeOfFail(canShowUser, request.session, user)
       return user

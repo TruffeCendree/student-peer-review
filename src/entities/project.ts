@@ -55,7 +55,9 @@ export class Project {
    */
   async assignSubmissions(expectedReviewsCount: number) {
     const { dataSource } = await import('../lib/typeorm')
-    const submissionMissingReviews = await (await this.getSubmissionsWithMissingReviewsAs('reviewed', expectedReviewsCount)).getMany()
+    const submissionMissingReviews = await (
+      await this.getSubmissionsWithMissingReviewsAs('reviewed', expectedReviewsCount)
+    ).getMany()
 
     for (const submission of submissionMissingReviews) {
       const missingReviews = expectedReviewsCount - (await submission.receivedReviews).length
@@ -64,7 +66,9 @@ export class Project {
       // it should ignore the submissions that are already assigned as reviewer
       const alreadyPeeredWithSubmissionIds = (await submission.receivedReviews).map(_ => _.reviewerSubmissionId)
 
-      const newReviewers = await (await this.getSubmissionsWithMissingReviewsAs('reviewer', expectedReviewsCount))
+      const newReviewers = await (
+        await this.getSubmissionsWithMissingReviewsAs('reviewer', expectedReviewsCount)
+      )
         .andWhere({ id: Not(submission.id) }) // do not review itself
         .andWhere({ id: Not(In(alreadyPeeredWithSubmissionIds)) })
         .limit(missingReviews)
