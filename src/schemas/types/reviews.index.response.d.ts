@@ -8,7 +8,7 @@
 export type ReviewsIndexResponse = {
   id: number;
   comment: string | null;
-  comparison: ("worse" | "similar" | "better") | null;
+  comparison: ("strongly_worse" | "slightly_worse" | "similar" | "slightly_better" | "strongly_better") | null;
   reviewedSubmissionId: number;
   reviewerSubmissionId: number;
 }[];

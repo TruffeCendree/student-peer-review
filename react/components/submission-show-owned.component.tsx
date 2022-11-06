@@ -11,15 +11,19 @@ import { ReviewsSerialized } from '@api/reviews.serialized'
 import { submissionsQuery } from 'queries/submissions.query'
 
 const comparisonToI18n: { [comparison in ReviewsSerialized['comparison']]: string } = {
-  worse: 'The reviewers think your deliverable is less good than their one.',
+  strongly_worse: 'The reviewers think your deliverable is strongly worse than their one.',
+  slightly_worse: 'The reviewers think your deliverable is slightly worse than their one.',
   similar: 'The reviewers think your deliverable is similar to their one.',
-  better: 'The reviewers think your deliverable is better than their one.'
+  slightly_better: 'The reviewers think your deliverable is slightly better than their one.',
+  strongly_better: 'The reviewers think your deliverable is strongly better than their one.'
 }
 
 const comparisonToSeverity: { [comparison in ReviewsSerialized['comparison']]: AlertColor } = {
-  worse: 'error',
+  strongly_worse: 'error',
+  slightly_worse: 'error',
   similar: 'warning',
-  better: 'success'
+  slightly_better: 'success',
+  strongly_better: 'success'
 }
 
 export function SubmissionShowOwned({

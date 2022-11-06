@@ -11,7 +11,7 @@
     },
     "comparison": {
       "type": ["string", "null"],
-      "enum": ["worse", "similar", "better"]
+      "enum": ["strongly_worse", "slightly_worse", "similar", "slightly_better", "strongly_better"]
     },
     "reviewedSubmissionId": {
       "type": "number"

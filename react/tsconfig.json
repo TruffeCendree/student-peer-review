@@ -3,6 +3,7 @@
     "experimentalDecorators": true,
     "baseUrl": ".",
     "jsx": "react",
+    "skipLibCheck": true,
     "paths": {
       "@api/*": ["../src/schemas/types/*"]
     }

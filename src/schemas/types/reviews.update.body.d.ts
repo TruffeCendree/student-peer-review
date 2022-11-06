@@ -7,5 +7,5 @@
 
 export interface ReviewsUpdateBody {
   comment: string;
-  comparison: "worse" | "similar" | "better";
+  comparison: "strongly_worse" | "slightly_worse" | "similar" | "slightly_better" | "strongly_better";
 }

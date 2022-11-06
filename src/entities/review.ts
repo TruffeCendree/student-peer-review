@@ -1,11 +1,7 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn, RelationId, Unique } from 'typeorm'
 import { Submission } from './submission'
 
-enum Comparison {
-  WORSE = 'worse',
-  SIMILAR = 'similar',
-  BETTER = 'better'
-}
+const comparisonsEnum = ['strongly_worse', 'slightly_worse', 'similar', 'slightly_better', 'strongly_better'] as const
 
 @Entity()
 @Unique('reviewedSubmissionId_reviewerSubmissionId', ['reviewedSubmission', 'reviewerSubmission'])
@@ -28,6 +24,6 @@ export class Review {
   @Column({ type: 'text', nullable: true })
   comment!: string | null
 
-  @Column({ type: 'enum', enum: Comparison, nullable: true })
-  comparison!: 'worse' | 'similar' | 'better' | null
+  @Column({ type: 'enum', enum: comparisonsEnum, nullable: true })
+  comparison!: typeof comparisonsEnum[number] | null
 }

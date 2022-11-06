@@ -7,7 +7,7 @@
     },
     "comparison": {
       "type": "string",
-      "enum": ["worse", "similar", "better"]
+      "enum": ["strongly_worse", "slightly_worse", "similar", "slightly_better", "strongly_better"]
     }
   },
   "additionalProperties": false,

@@ -13,9 +13,11 @@ import { useDisabledAsync } from 'hooks/use-disabled-async.hook'
 import { ReviewsSerialized } from '@api/reviews.serialized'
 
 const comparisonChoices = [
-  { value: 'worse' as const, label: 'Their deliverable is less good than mine.' },
+  { value: 'strongly_worse' as const, label: 'Their deliverable is strongly worse than mine.' },
+  { value: 'slightly_worse' as const, label: 'Their deliverable is slightly worse than mine.' },
   { value: 'similar' as const, label: 'Their deliverable is similar to mine.' },
-  { value: 'better' as const, label: 'Their deliverable is better than mine.' }
+  { value: 'slightly_better' as const, label: 'Their deliverable is slightly better than mine.' },
+  { value: 'strongly_better' as const, label: 'Their deliverable is strongly better than mine.' }
 ]
 
 export function SubmissionShowReviewed({

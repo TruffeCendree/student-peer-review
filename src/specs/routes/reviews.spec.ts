@@ -33,7 +33,7 @@ describe('/reviews', function () {
       const review = await createReviewFixture()
       const [user] = await (await review.reviewerSubmission).users
       const cookies = loginAs(await createSessionFixture({ user }))
-      const payload: ReviewsUpdateBody = { comment: 'Good job, amazing', comparison: 'better' }
+      const payload: ReviewsUpdateBody = { comment: 'Good job, amazing', comparison: 'strongly_better' }
       const response = await server.inject({ url: `/reviews/${review.id}`, method: 'PATCH', cookies, payload })
       expect(response.statusCode).to.eq(200)
 
