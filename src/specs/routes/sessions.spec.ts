@@ -1,9 +1,9 @@
 import { server } from '../../lib/fastify'
 import { createUserFixture } from '../fixtures/users-fixtures'
 import { expect } from 'chai'
-import { getRepository } from 'typeorm'
 import { User } from '../../entities/user'
 import { SessionsInviteBody } from '../../schemas/types/sessions.invite.body'
+import { dataSource } from '../../lib/typeorm'
 
 describe('/sessions', function () {
   describe('#create', function () {
@@ -16,7 +16,7 @@ describe('/sessions', function () {
       expect((await user.sessions).length).to.eq(1)
 
       // reload the user entity
-      user = await getRepository(User).findOneByOrFail({ id: user.id })
+      user = await dataSource.getRepository(User).findOneByOrFail({ id: user.id })
       expect(user.loginToken).to.be.null
     })
   })

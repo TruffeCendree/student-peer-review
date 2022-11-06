@@ -1,6 +1,6 @@
-import { createQueryBuilder } from 'typeorm'
 import { Review } from '../entities/review'
 import { Session } from '../entities/session'
+import { dataSource } from '../lib/typeorm'
 import { PolicyAction, PolicyActionIndex, UnauthorizedError, UnloggedError } from './policy'
 
 export const canIndexReview: PolicyActionIndex = async function canIndexReview(session) {
@@ -11,7 +11,7 @@ export const canIndexReview: PolicyActionIndex = async function canIndexReview(s
 export const canUpdateReview: PolicyAction<Review> = async function canUpdateReview(session, record) {
   if (!session) throw new UnloggedError()
 
-  const isReviewer = !!(await createQueryBuilder('submission_users_user', 'submission_users_user')
+  const isReviewer = !!(await dataSource.createQueryBuilder('submission_users_user', 'submission_users_user')
     .where({ submissionId: record.reviewerSubmissionId, userId: session.userId })
     .getRawOne())
 
@@ -20,7 +20,7 @@ export const canUpdateReview: PolicyAction<Review> = async function canUpdateRev
 }
 
 export function reviewsPolicyScope(session: Session) {
-  return createQueryBuilder(Review, Review.name)
+  return dataSource.createQueryBuilder(Review, Review.name)
     .leftJoin('Review.reviewedSubmission', 'ReviewedSubmission')
     .leftJoin('Review.reviewerSubmission', 'ReviewerSubmission')
     .leftJoin('ReviewedSubmission.users', 'ReviewedSubmissionUsers')

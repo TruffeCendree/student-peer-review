@@ -8,9 +8,9 @@ import { ReviewsUpdateBody } from '../schemas/types/reviews.update.body'
 import { ReviewsSerialized } from '../schemas/types/reviews.serialized'
 import { authorizeOfFail } from '../policies/policy'
 import { canIndexReview, canUpdateReview, reviewsPolicyScope } from '../policies/reviews-policy'
-import { getRepository } from 'typeorm'
 import { Review } from '../entities/review'
 import { ReviewsIndexResponse } from '../schemas/types/reviews.index.response'
+import { dataSource } from '../lib/typeorm'
 
 export async function reviewsRoutes(fastify: FastifyInstance) {
   fastify.addSchema(reviewsSerializedSchema)
@@ -35,12 +35,12 @@ export async function reviewsRoutes(fastify: FastifyInstance) {
       response: { 200: reviewsSerializedSchema }
     },
     handler: async function update(request): Promise<ReviewsSerialized> {
-      const review = await getRepository(Review).findOneByOrFail({ id: request.params.id })
+      const review = await dataSource.getRepository(Review).findOneByOrFail({ id: request.params.id })
       await authorizeOfFail(canUpdateReview, request.session, review)
 
       review.comment = request.body.comment
       review.comparison = request.body.comparison
-      await getRepository(Review).save(review)
+      await dataSource.getRepository(Review).save(review)
       return review
     }
   })

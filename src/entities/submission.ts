@@ -3,7 +3,6 @@ import { v4 as uuidv4 } from 'uuid'
 import { mkdir, writeFile } from 'fs/promises'
 import {
   Column,
-  createQueryBuilder,
   Entity,
   JoinTable,
   ManyToMany,
@@ -44,16 +43,19 @@ export class Submission {
   get fileUrl() {
     return `/public/submissions/${this.fileToken}`
   }
+  
+  async getUsers$ () {
+    const { dataSource } = await import('../lib/typeorm')
 
-  get users$() {
-    return createQueryBuilder(User, User.name)
+    return dataSource
+      .createQueryBuilder(User, User.name)
       .innerJoin('User.submissions', Submission.name)
       .where('Submission.id = :submissionId')
       .setParameter('submissionId', this.id)
   }
 
-  get userIds() {
-    return this.users$
+  async getUserIds() {
+    return (await this.getUsers$())
       .select('User.id')
       .getMany()
       .then(partialUsers => partialUsers.map(_ => _.id))

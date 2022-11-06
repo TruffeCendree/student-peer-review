@@ -2,9 +2,9 @@ import { Submission } from '../../entities/submission'
 import { v4 as uuidv4 } from 'uuid'
 import { User } from '../../entities/user'
 import { buildUserFixture } from './users-fixtures'
-import { getRepository } from 'typeorm'
 import { Project } from '../../entities/project'
 import { buildProjectFixture } from './projects-fixtures'
+import { dataSource } from '../../lib/typeorm'
 
 interface SubmissionFixtureOptions {
   user?: User
@@ -21,5 +21,5 @@ export function buildSubmissionFixture(opts: SubmissionFixtureOptions = {}) {
 }
 
 export async function createSubmissionFixture(opts: SubmissionFixtureOptions = {}) {
-  return getRepository(Submission).save(buildSubmissionFixture(opts))
+  return dataSource.getRepository(Submission).save(buildSubmissionFixture(opts))
 }

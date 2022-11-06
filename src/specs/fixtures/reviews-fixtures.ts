@@ -1,6 +1,6 @@
-import { getRepository } from 'typeorm'
 import { Review } from '../../entities/review'
 import { Submission } from '../../entities/submission'
+import { dataSource } from '../../lib/typeorm'
 import { buildSubmissionFixture } from './submissions-fixtures'
 
 interface ReviewFixtureOptions {
@@ -16,5 +16,5 @@ export function buildReviewFixture(opts: ReviewFixtureOptions = {}) {
 }
 
 export function createReviewFixture(opts: ReviewFixtureOptions = {}) {
-  return getRepository(Review).save(buildReviewFixture(opts))
+  return dataSource.getRepository(Review).save(buildReviewFixture(opts))
 }

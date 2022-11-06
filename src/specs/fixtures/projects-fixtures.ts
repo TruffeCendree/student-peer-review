@@ -1,9 +1,9 @@
-import { getRepository } from 'typeorm'
 import { Project } from '../../entities/project'
 import { User } from '../../entities/user'
 import { faker } from '@faker-js/faker'
 import { buildUserFixture } from './users-fixtures'
 import { buildSubmissionFixture } from './submissions-fixtures'
+import { dataSource } from '../../lib/typeorm'
 
 type ProjectFixtureOptions = ({ users?: User[] } | { userCount?: number }) & { withSubmission?: boolean }
 
@@ -29,5 +29,5 @@ export async function buildProjectFixture(opts: ProjectFixtureOptions = {}) {
 }
 
 export async function createProjectFixture(opts: ProjectFixtureOptions = {}) {
-  return getRepository(Project).save(await buildProjectFixture(opts))
+  return dataSource.getRepository(Project).save(await buildProjectFixture(opts))
 }

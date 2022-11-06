@@ -1,13 +1,12 @@
 import {
   Column,
-  createQueryBuilder,
   Entity,
-  getRepository,
   In,
   ManyToMany,
   Not,
   OneToMany,
-  PrimaryGeneratedColumn
+  PrimaryGeneratedColumn,
+  SelectQueryBuilder
 } from 'typeorm'
 import { Review } from './review'
 import { Submission } from './submission'
@@ -30,8 +29,11 @@ export class Project {
   @OneToMany(() => Submission, submission => submission.project, { cascade: ['insert'] })
   submissions!: Promise<Submission[]>
 
-  getSubmissionForUser(user: User) {
-    return getRepository(Submission)
+  async getSubmissionForUser(user: User) {
+    const { dataSource } = await import('../lib/typeorm')
+
+    return dataSource
+      .getRepository(Submission)
       .createQueryBuilder()
       .innerJoin('Submission.users', 'Users')
       .andWhere({ project: this })
@@ -40,11 +42,13 @@ export class Project {
       .getOne()
   }
 
-  private getSubmissionsWithMissingReviewsAs(role: 'reviewer' | 'reviewed', expectedReviewsCount: number) {
+  private async getSubmissionsWithMissingReviewsAs(role: 'reviewer' | 'reviewed', expectedReviewsCount: number) {
+    const { dataSource } = await import('../lib/typeorm')
     const foreignKey = role === 'reviewed' ? 'reviewedSubmissionId' : 'reviewerSubmissionId'
 
     // COUNT(Review.id) counts 0 IF Review.id IS NULL, as opposite to COUNT(*)
-    return createQueryBuilder(Submission, Submission.name)
+    return dataSource
+      .createQueryBuilder(Submission, Submission.name)
       .leftJoin(Review, 'Review', `Review.${foreignKey} = Submission.id`)
       .andWhere({ project: this })
       .groupBy('Submission.id')
@@ -59,10 +63,8 @@ export class Project {
    * The grade is computed based on the consistency of the bi-directional review.
    */
   async assignSubmissions(expectedReviewsCount: number) {
-    const submissionMissingReviews = await this.getSubmissionsWithMissingReviewsAs(
-      'reviewed',
-      expectedReviewsCount
-    ).getMany()
+    const { dataSource } = await import('../lib/typeorm')
+    const submissionMissingReviews = await (await this.getSubmissionsWithMissingReviewsAs('reviewed', expectedReviewsCount)).getMany()
 
     for (const submission of submissionMissingReviews) {
       const missingReviews = expectedReviewsCount - (await submission.receivedReviews).length
@@ -71,7 +73,7 @@ export class Project {
       // it should ignore the submissions that are already assigned as reviewer
       const alreadyPeeredWithSubmissionIds = (await submission.receivedReviews).map(_ => _.reviewerSubmissionId)
 
-      const newReviewers = await this.getSubmissionsWithMissingReviewsAs('reviewer', expectedReviewsCount)
+      const newReviewers = await (await this.getSubmissionsWithMissingReviewsAs('reviewer', expectedReviewsCount))
         .andWhere({ id: Not(submission.id) }) // do not review itself
         .andWhere({ id: Not(In(alreadyPeeredWithSubmissionIds)) })
         .limit(missingReviews)
@@ -90,7 +92,7 @@ export class Project {
         newReviews.push(review1, review2)
       }
 
-      await getRepository(Review).save(newReviews)
+      await dataSource.getRepository(Review).save(newReviews)
     }
   }
 }

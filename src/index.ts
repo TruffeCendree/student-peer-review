@@ -1,9 +1,9 @@
 import { FASTIFY_ADDR, FASTIFY_PORT } from './lib/dotenv'
 import { server } from './lib/fastify'
-import { initConnection } from './lib/typeorm'
+import { dataSource } from './lib/typeorm'
 
 async function run() {
-  await initConnection()
+  await dataSource.initialize()
   await server.listen({ port: FASTIFY_PORT, host: FASTIFY_ADDR })
 }
 

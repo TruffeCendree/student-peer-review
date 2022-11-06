@@ -7,12 +7,12 @@ import { SubmissionsCreateBody } from '../schemas/types/submissions.create.body'
 import * as submissionsSerializedSchema from '../schemas/json/submissions.serialized.json'
 import * as submissionsIndexResponse from '../schemas/json/submissions.index.response.json'
 import * as submissionsCreateBodySchema from '../schemas/json/submissions.create.body.json'
-import { getRepository } from 'typeorm'
 import { Project } from '../entities/project'
 import { MultipartFile } from '@fastify/multipart'
 import { canIndexProject } from '../policies/projects-policy'
 import { SubmissionsSerialized } from '../schemas/types/submissions.serialized'
 import { SubmissionsIndexResponse } from '../schemas/types/submissions.index.response'
+import { dataSource } from '../lib/typeorm'
 
 export async function submissionsRoutes(fastify: FastifyInstance) {
   fastify.addSchema(submissionsSerializedSchema)
@@ -35,21 +35,21 @@ export async function submissionsRoutes(fastify: FastifyInstance) {
     },
     handler: async function create(request): Promise<SubmissionsSerialized> {
       const submission = new Submission()
-      const project = await getRepository(Project).findOneByOrFail({ id: request.body.projectId.value })
+      const project = await dataSource.getRepository(Project).findOneByOrFail({ id: request.body.projectId.value })
       const users = [request.session?.user as User]
 
       if (request.body['userIds[]']) {
         const userIds = Array.isArray(request.body['userIds[]'])
           ? request.body['userIds[]'].map(_ => _.value)
           : [request.body['userIds[]'].value]
-        users.push(...(await getRepository(User).findByIds(userIds)))
+        users.push(...(await dataSource.getRepository(User).findByIds(userIds)))
       }
 
       submission.users = Promise.resolve(users)
       submission.project = Promise.resolve(project)
       await authorizeOfFail(canCreateSubmission, request.session, submission)
       await submission.setFile(request.body.file as any as MultipartFile)
-      await getRepository(Submission).save(submission)
+      await dataSource.getRepository(Submission).save(submission)
       return serializeSubmission(submission)
     }
   })
@@ -59,6 +59,6 @@ async function serializeSubmission(submission: Submission) {
   return {
     ...submission,
     fileUrl: submission.fileUrl,
-    userIds: await submission.userIds
+    userIds: await submission.getUserIds()
   }
 }

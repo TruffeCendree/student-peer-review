@@ -1,9 +1,9 @@
 import { expect } from 'chai'
 import * as FormData from 'form-data'
 import { createReadStream } from 'fs'
-import { getRepository } from 'typeorm'
 import { Submission } from '../../entities/submission'
 import { server } from '../../lib/fastify'
+import { dataSource } from '../../lib/typeorm'
 import { SubmissionsIndexResponse } from '../../schemas/types/submissions.index.response'
 import { createProjectFixture } from '../fixtures/projects-fixtures'
 import { createReviewFixture } from '../fixtures/reviews-fixtures'
@@ -54,7 +54,7 @@ describe('/submissions', function () {
       expect(response.json()).to.haveOwnProperty('id')
       expect(response.json()).to.haveOwnProperty('fileUrl')
 
-      const submission = await getRepository(Submission).findOneOrFail({ where: {}, order: { id: 'DESC' } })
+      const submission = await dataSource.getRepository(Submission).findOneOrFail({ where: {}, order: { id: 'DESC' } })
       const submissionUserIds = (await submission.users).map(_ => _.id)
       expect(submissionUserIds.length).to.eq(3)
       expect(submissionUserIds).to.have.members([session.userId, secondUser.id, thirdUser.id])
@@ -82,7 +82,7 @@ describe('/submissions', function () {
       expect(response.json()).to.haveOwnProperty('id')
       expect(response.json()).to.haveOwnProperty('fileUrl')
 
-      const submission = await getRepository(Submission).findOneOrFail({ where: {}, order: { id: 'DESC' } })
+      const submission = await dataSource.getRepository(Submission).findOneOrFail({ where: {}, order: { id: 'DESC' } })
       const submissionUserIds = (await submission.users).map(_ => _.id)
       expect(submissionUserIds.length).to.eq(2)
       expect(submissionUserIds).to.have.members([session.userId, secondUser.id])
