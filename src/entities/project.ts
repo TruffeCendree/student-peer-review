@@ -1,13 +1,4 @@
-import {
-  Column,
-  Entity,
-  In,
-  ManyToMany,
-  Not,
-  OneToMany,
-  PrimaryGeneratedColumn,
-  SelectQueryBuilder
-} from 'typeorm'
+import { Column, Entity, In, ManyToMany, Not, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
 import { Review } from './review'
 import { Submission } from './submission'
 import { User } from './user'
