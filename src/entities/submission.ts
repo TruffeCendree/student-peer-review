@@ -62,8 +62,9 @@ export class Submission {
   }
 
   async setFile(file: MultipartFile) {
-    if (!file.filename.toLocaleLowerCase().endsWith('.zip')) {
-      throw new UnauthorizedError('You can only upload a ZIP file')
+    const lowerName = file.filename.toLocaleLowerCase()
+    if (!lowerName.endsWith('.zip') && !lowerName.endsWith('.pdf')) {
+      throw new UnauthorizedError('You can only upload a ZIP/PDF file')
     }
 
     this.fileToken = `${uuidv4()}-${file.filename}`
