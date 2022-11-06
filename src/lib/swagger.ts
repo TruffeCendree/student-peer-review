@@ -1,10 +1,9 @@
-import { SwaggerOptions } from 'fastify-swagger'
+import { SwaggerOptions } from '@fastify/swagger'
+import { FastifySwaggerUiOptions } from '@fastify/swagger-ui'
 import { BASE_URL } from './dotenv'
 
 export const swaggerConfig: SwaggerOptions = {
   mode: 'dynamic',
-  routePrefix: '/documentation',
-  exposeRoute: true,
   swagger: {
     info: {
       title: 'Swagger documentation',
@@ -16,4 +15,8 @@ export const swaggerConfig: SwaggerOptions = {
     consumes: ['application/json'],
     produces: ['application/json']
   }
+}
+
+export const swaggerUiConfig: FastifySwaggerUiOptions = {
+  routePrefix: '/documentation',
 }

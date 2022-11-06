@@ -4,7 +4,7 @@ import { initConnection } from './lib/typeorm'
 
 async function run() {
   await initConnection()
-  await server.listen(FASTIFY_PORT, FASTIFY_ADDR)
+  await server.listen({ port: FASTIFY_PORT, host: FASTIFY_ADDR })
 }
 
 run().catch(console.error)

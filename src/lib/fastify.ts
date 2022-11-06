@@ -1,8 +1,9 @@
 import fastify from 'fastify'
-import cookie, { FastifyCookieOptions } from 'fastify-cookie'
-import fastifyMultipart from 'fastify-multipart'
-import fastifySwagger from 'fastify-swagger'
-import fastifyStatic from 'fastify-static'
+import cookie, { FastifyCookieOptions } from '@fastify/cookie'
+import fastifyMultipart from '@fastify/multipart'
+import fastifySwagger from '@fastify/swagger'
+import fastifyStatic from '@fastify/static'
+import fastifySwaggerUi from '@fastify/swagger-ui'
 import { UnauthorizedError } from '../policies/policy'
 import { projectsRoutes } from '../routes/projects'
 import { sessionRoutes } from '../routes/sessions'
@@ -11,7 +12,7 @@ import { userRoutes } from '../routes/users'
 import { COOKIE_SECRET, FASTIFY_LOGGING } from './dotenv'
 import { multipartConfig } from './multipart'
 import { loadSession } from './session'
-import { swaggerConfig } from './swagger'
+import { swaggerConfig, swaggerUiConfig } from './swagger'
 import * as multipartFieldNumberSchema from '../schemas/json/multipart.field.number.json'
 import * as multipartFileSchema from '../schemas/json/multipart.file.json'
 import * as path from 'path'
@@ -26,6 +27,7 @@ export const server = fastify({ logger: FASTIFY_LOGGING })
   .addHook('preHandler', loadSession)
   .register(fastifyMultipart, multipartConfig)
   .register(fastifySwagger, swaggerConfig)
+  .register(fastifySwaggerUi, swaggerUiConfig)
   .register(sessionRoutes, { prefix: '/sessions' })
   .register(userRoutes, { prefix: '/users' })
   .register(projectsRoutes, { prefix: '/projects' })

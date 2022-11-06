@@ -1,4 +1,4 @@
-import { MultipartFile } from 'fastify-multipart'
+import { MultipartFile } from '@fastify/multipart'
 import { v4 as uuidv4 } from 'uuid'
 import { mkdir, writeFile } from 'fs/promises'
 import {

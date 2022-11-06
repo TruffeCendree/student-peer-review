@@ -25,7 +25,7 @@ export async function saveSession(reply: FastifyReply, user: User) {
 }
 
 export async function loadSession(request: FastifyRequest) {
-  if (!request.cookies[COOKIE_NAME]) return
+  if (!request.cookies[COOKIE_NAME] || !request.cookies.sessionId) return
 
   const unsigned = request.unsignCookie(request.cookies.sessionId)
   if (unsigned.value && unsigned.valid) request.session = await getRepository(Session).findOne(unsigned.value)

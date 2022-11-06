@@ -9,7 +9,7 @@ import * as submissionsIndexResponse from '../schemas/json/submissions.index.res
 import * as submissionsCreateBodySchema from '../schemas/json/submissions.create.body.json'
 import { getRepository } from 'typeorm'
 import { Project } from '../entities/project'
-import { MultipartFile } from 'fastify-multipart'
+import { MultipartFile } from '@fastify/multipart'
 import { canIndexProject } from '../policies/projects-policy'
 import { SubmissionsSerialized } from '../schemas/types/submissions.serialized'
 import { SubmissionsIndexResponse } from '../schemas/types/submissions.index.response'
