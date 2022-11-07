@@ -13,6 +13,7 @@ import { canIndexProject } from '../policies/projects-policy'
 import { SubmissionsSerializedJson as SubmissionsSerialized } from '../schemas/types/submissions.serialized'
 import { SubmissionsIndexResponse } from '../schemas/types/submissions.index.response'
 import { dataSource } from '../lib/typeorm'
+import { SubmissionsService } from '../services/submissions-service'
 
 export async function submissionsRoutes(fastify: FastifyInstance) {
   fastify.addSchema(submissionsSerializedSchema)
@@ -23,8 +24,9 @@ export async function submissionsRoutes(fastify: FastifyInstance) {
     },
     handler: async function index(request): Promise<SubmissionsIndexResponse> {
       await authorizeOfFail(canIndexProject, request.session, null)
+      const submissionsService = new SubmissionsService(dataSource.manager)
       const submissions = await submissionPolicyScope(request.session!).getMany()
-      return Promise.all(submissions.map(serializeSubmission))
+      return Promise.all(submissions.map(_ => submissionsService.serialize(_)))
     }
   })
 
@@ -35,6 +37,7 @@ export async function submissionsRoutes(fastify: FastifyInstance) {
     },
     handler: async function create(request): Promise<SubmissionsSerialized> {
       const submission = new Submission()
+      const submissionsService = new SubmissionsService(dataSource.manager)
       const project = await dataSource.getRepository(Project).findOneByOrFail({ id: request.body.projectId.value })
       const users = [request.session?.user as User]
 
@@ -48,17 +51,9 @@ export async function submissionsRoutes(fastify: FastifyInstance) {
       submission.users = Promise.resolve(users)
       submission.project = Promise.resolve(project)
       await authorizeOfFail(canCreateSubmission, request.session, submission)
-      await submission.setFile(request.body.file as any as MultipartFile)
+      await submissionsService.setFile(submission, request.body.file as any as MultipartFile)
       await dataSource.getRepository(Submission).save(submission)
-      return serializeSubmission(submission)
+      return submissionsService.serialize(submission)
     }
   })
-}
-
-async function serializeSubmission(submission: Submission) {
-  return {
-    ...submission,
-    fileUrl: submission.fileUrl,
-    userIds: await submission.getUserIds()
-  }
 }

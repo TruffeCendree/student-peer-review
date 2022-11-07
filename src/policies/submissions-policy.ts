@@ -4,6 +4,7 @@ import { Session } from '../entities/session'
 import { Submission } from '../entities/submission'
 import { User } from '../entities/user'
 import { dataSource } from '../lib/typeorm'
+import { ProjectsService } from '../services/projects-service'
 import { PolicyAction, PolicyActionIndex, UnauthorizedError, UnloggedError } from './policy'
 
 export const canIndexProject: PolicyActionIndex = async function canIndexProject(session) {
@@ -14,7 +15,8 @@ export const canIndexProject: PolicyActionIndex = async function canIndexProject
 export const canCreateSubmission: PolicyAction<Submission> = async function canCreateSubmission(session, record) {
   if (!session) throw new UnloggedError()
 
-  const existingSubmission = await (await record.project).getSubmissionForUser(session.user)
+  const projectsService = new ProjectsService(dataSource.manager)
+  const existingSubmission = await projectsService.getSubmissionForUser(await record.project, session.user)
   if (existingSubmission) throw new UnauthorizedError('You already submitted your job for this project')
 
   if (!(await isUserRegistredToProject(session.user, await record.project))) {

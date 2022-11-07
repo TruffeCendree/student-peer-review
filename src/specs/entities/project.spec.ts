@@ -3,20 +3,23 @@ import { Project } from '../../entities/project'
 import { Review } from '../../entities/review'
 import { Submission } from '../../entities/submission'
 import { dataSource } from '../../lib/typeorm'
+import { ProjectsService } from '../../services/projects-service'
 import { createProjectFixture } from '../fixtures/projects-fixtures'
 
 describe('Project', function () {
   describe('#assignSubmissions', function () {
     it('should not assign to itself', async function () {
       const project = await createProjectFixture({ userCount: 1, withSubmission: true })
+      const projectsService = new ProjectsService(dataSource.manager)
       const reviewsCount = await dataSource.getRepository(Review).count()
-      await project.assignSubmissions(2)
+      await projectsService.assignSubmissions(project, 2)
       expect(await dataSource.getRepository(Review).count()).to.eq(reviewsCount)
     })
 
     it('should assign 2 reviews to each submission', async function () {
       let project = await createProjectFixture({ userCount: 4, withSubmission: true })
-      await project.assignSubmissions(2)
+      const projectsService = new ProjectsService(dataSource.manager)
+      await projectsService.assignSubmissions(project, 2)
       project = await dataSource.getRepository(Project).findOneByOrFail({ id: project.id }) // reload
 
       expect((await project.submissions).length).to.eq(4)
@@ -39,7 +42,8 @@ describe('Project', function () {
       review2.reviewedSubmission = Promise.resolve((await project.submissions)[1])
       dataSource.getRepository(Review).create(review2)
 
-      await project.assignSubmissions(2)
+      const projectsService = new ProjectsService(dataSource.manager)
+      await projectsService.assignSubmissions(project, 2)
       project = await dataSource.getRepository(Project).findOneByOrFail({ id: project.id }) // reload
 
       expect((await project.submissions).length).to.eq(4)
@@ -54,7 +58,8 @@ describe('Project', function () {
       expect(await dataSource.getRepository(Submission).count()).to.eq(2)
 
       // impossible to fullfil, only one peering is possible with 2 submissions
-      await project.assignSubmissions(2)
+      const projectsService = new ProjectsService(dataSource.manager)
+      await projectsService.assignSubmissions(project, 2)
 
       // 1 peering * 2 reviews per peering
       expect(await dataSource.getRepository(Review).count()).to.eq(2)
@@ -64,8 +69,9 @@ describe('Project', function () {
       let project1 = await createProjectFixture({ userCount: 2, withSubmission: true })
       let project2 = await createProjectFixture({ userCount: 2, withSubmission: true })
 
-      await project1.assignSubmissions(2)
-      await project2.assignSubmissions(2)
+      const projectsService = new ProjectsService(dataSource.manager)
+      await projectsService.assignSubmissions(project1, 2)
+      await projectsService.assignSubmissions(project2, 2)
 
       project1 = await dataSource.getRepository(Project).findOneByOrFail({ id: project1.id }) // reload
       project2 = await dataSource.getRepository(Project).findOneByOrFail({ id: project2.id }) // reload
