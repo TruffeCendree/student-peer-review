@@ -22,7 +22,7 @@ describe('/users', function () {
         url: `/users/${anotherUser.id}`,
         cookies: loginAs(session)
       })
-      expect(response.statusCode).to.eq(422)
+      expect(response.statusCode).to.eq(403)
       expect(response.json()).to.haveOwnProperty('message').equal('You are not allowed to perform this action')
     })
   })
