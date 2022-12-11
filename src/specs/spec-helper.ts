@@ -1,4 +1,4 @@
-import { sign } from 'cookie-signature'
+import { sign } from '@fastify/cookie'
 import { Session } from '../entities/session'
 import { COOKIE_NAME, COOKIE_SECRET } from '../lib/dotenv'
 import { dataSource } from '../lib/typeorm'

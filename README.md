@@ -70,3 +70,6 @@ services:
 node dist/server/bin/import-students.js --excelFile ~/Téléchargements/m2-se1-students.xlsx
 node dist/server/bin/add-students-to-project.js --excelFile ~/Téléchargements/m2-se1-students.xlsx --projectId 1
 ```
+
+const project = await dataSource.getRepository(Project).findOneById(1)
+await project.assignSubmissions(1)
